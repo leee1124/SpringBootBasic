@@ -5,11 +5,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 @Entity
-public class Question {
+public class QuestionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,4 +22,7 @@ public class Question {
     private String content;
 
     private LocalDateTime createDateTime;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
+    private List<AnswerEntity> answerList;
 }
