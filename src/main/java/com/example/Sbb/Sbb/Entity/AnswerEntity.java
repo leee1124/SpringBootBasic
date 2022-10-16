@@ -18,7 +18,7 @@ public class AnswerEntity {
     private String content;
 
     private LocalDateTime createDate;
-
+//
     @ManyToOne
     private QuestionEntity question;
 }
