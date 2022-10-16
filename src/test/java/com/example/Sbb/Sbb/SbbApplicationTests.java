@@ -1,6 +1,8 @@
 package com.example.Sbb.Sbb;
 
+import com.example.Sbb.Sbb.Entity.AnswerEntity;
 import com.example.Sbb.Sbb.Entity.QuestionEntity;
+import com.example.Sbb.Sbb.Repository.AnswerRepository;
 import com.example.Sbb.Sbb.Repository.QuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-@Transactional
 class SbbApplicationTests {
 	@Autowired
 	private QuestionRepository questionRepository;
+	@Autowired
+	private AnswerRepository answerRepository;
 
 	@Test
 	void QuestionEntityTestJPA(){
@@ -36,6 +39,7 @@ class SbbApplicationTests {
 	}
 
 	@Test
+	@Transactional
 	void findAllTestJPA(){
 		List<QuestionEntity> all = this.questionRepository.findAll();
 		assertEquals(2, all.size()); //assertEquals(기대값, 실제값) 동일한지 조사
@@ -45,6 +49,7 @@ class SbbApplicationTests {
 	}
 
 	@Test
+	@Transactional
 	void findByIdTestJPA(){
 		Optional<QuestionEntity> oq = this.questionRepository.findById(1);
 		if(oq.isPresent()){
@@ -54,18 +59,21 @@ class SbbApplicationTests {
 	}
 
 	@Test
+	@Transactional
 	void findBySubjectTestJPA(){
 		QuestionEntity questionEntity = this.questionRepository.findBySubject("Sbb가 무엇인가요?");
-		assertEquals(3, questionEntity.getId());
+		assertEquals(1, questionEntity.getId());
 	}
 
 	@Test
+	@Transactional
 	void findBySubjectAndContentTestJPA(){
 		QuestionEntity questionEntity = this.questionRepository.findBySubjectAndContent("Sbb가 무엇인가요?","Sbb에 대해서 알고 싶습니다");
-		assertEquals(3, questionEntity.getId());
+		assertEquals(1, questionEntity.getId());
 	}
 
 	@Test
+	@Transactional
 	void findBySubjectLikeTestJPA(){
 		List<QuestionEntity> questionEntityList = this.questionRepository.findBySubjectLike("Sbb%");
 		QuestionEntity questionEntity = questionEntityList.get(0);
@@ -73,8 +81,9 @@ class SbbApplicationTests {
 	}
 
 	@Test
+	@Transactional
 	void editSubjectTestJPA(){
-		Optional<QuestionEntity> optionalQuestionEntity = this.questionRepository.findById(3);
+		Optional<QuestionEntity> optionalQuestionEntity = this.questionRepository.findById(1);
 		assertTrue(optionalQuestionEntity.isPresent());
 		QuestionEntity questionEntity = optionalQuestionEntity.get();
 		questionEntity.setSubject("수정된 제목");
@@ -82,18 +91,38 @@ class SbbApplicationTests {
 	}
 
 	@Test
+	@Transactional
 	void deleteTestJPA(){
 		assertEquals(2, this.questionRepository.count());
-		Optional<QuestionEntity> optionalQuestionEntity = this.questionRepository.findById(3);
+		Optional<QuestionEntity> optionalQuestionEntity = this.questionRepository.findById(1);
 		assertTrue(optionalQuestionEntity.isPresent());
 		QuestionEntity questionEntity = optionalQuestionEntity.get();
 		this.questionRepository.delete(questionEntity);
 		assertEquals(1, this.questionRepository.count());
 	}
 
+	@Test
+	@Transactional
+	void saveAnswerTestJPA(){
+		Optional<QuestionEntity> optionalQuestionEntity = this.questionRepository.findById(2);
+		assertTrue(optionalQuestionEntity.isPresent());
+		QuestionEntity questionEntity = optionalQuestionEntity.get();
+
+		AnswerEntity answerEntity = new AnswerEntity();
+		answerEntity.setContent("네 자동으로 생성됩니다.");
+		answerEntity.setQuestion(questionEntity); // 어떤 질문의 답변인지 알기 위해서 Qeustion 객체가 필요함
+		answerEntity.setCreateDate(LocalDateTime.now());
+		this.answerRepository.save(answerEntity);
+	}
 
 	@Test
-	void contextLoads() {
+	@Transactional
+	void searchTestJPA(){
+		Optional<AnswerEntity> optionalAnswerEntity = this.answerRepository.findById(1);
+		assertTrue(optionalAnswerEntity.isPresent());
+
+		AnswerEntity answerEntity = optionalAnswerEntity.get();
+		assertEquals(2, answerEntity.getQuestion().getId());
 	}
 
 }
