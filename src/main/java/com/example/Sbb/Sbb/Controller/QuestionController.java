@@ -1,14 +1,17 @@
 package com.example.Sbb.Sbb.Controller;
 
 import com.example.Sbb.Sbb.Entity.QuestionEntity;
+import com.example.Sbb.Sbb.Form.AnswerForm;
+import com.example.Sbb.Sbb.Form.QuestionForm;
 import com.example.Sbb.Sbb.Service.QuestionService;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.patterns.TypePatternQuestions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/question")
@@ -29,19 +32,27 @@ public class QuestionController {
     }
 
 
-    //변하는 id값을 얻을 때 @PathVariabsse애너테이션 사용,
+    //변하는 id값을 얻을 때 @PathVariable애너테이션 사용,
     //@RequestMapping(value = "/question/detail/{id}")에서 사용한 id와
     //@PathVariable("id")의 매개변수 이름이 동일해야함
     @RequestMapping(value = "/detail/{id}")
-
-    public String detail(Model model, @PathVariable("id") Integer id){
+    public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
         QuestionEntity questionEntity = this.questionService.getQuestion(id);
         model.addAttribute("question", questionEntity);
         return "question_detail";
     }
 
+    @PostMapping("/create")
+    public String createQuestion(@Valid QuestionForm questionForm, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "question_form";
+        }
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent());
+        return "redirect:/question/list";
+    }
+
     @GetMapping("/create")
-    public String createQuestion(){
+    public String createQuestion(QuestionForm questionForm){
         return "question_form";
     }
 
