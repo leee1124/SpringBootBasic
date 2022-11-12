@@ -6,6 +6,7 @@ import com.example.Sbb.Sbb.Form.QuestionForm;
 import com.example.Sbb.Sbb.Service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.patterns.TypePatternQuestions;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,13 +22,34 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
 
+
+    /*
+     * http://localhost:8080/question/list?page=0처럼 GET방식으로 요청된 URL에서 page 값을 가져오기 위해서
+     * @RequestParam(value = "page", defaultValue = "0") int page 사용
+     * 디폴트값은 0(첫 페이지 보여줌)
+     */
     @RequestMapping("/list")
-    public String list(Model model) {
-        List<QuestionEntity> questionEntityList = this.questionService.getList();
-        //질문목록 데이터를 생성하여 Model객체에 questionList라는 이름으로 값 저장
-        //Model 객체는 자바 클래스와 템플릿 간의 연결고리를 한다.
-        //Model 객체에 값을 담아두면 템플릿에서 그 값을 사용할 수 있다.
-        model.addAttribute("questionEntityList", questionEntityList);
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+
+
+        /*
+         *질문목록 데이터를 생성하여 Model객체에 questionList라는 이름으로 값 저장
+         *Model 객체는 자바 클래스와 템플릿 간의 연결고리를 한다.
+         *Model 객체에 값을 담아두면 템플릿에서 그 값을 사용할 수 있다.
+         */
+        //List<QuestionEntity> questionEntityList = this.questionService.getList();
+        //model.addAttribute("questionEntityList", questionEntityList);
+
+
+        /*
+         * 기존에 사용하던 questionEntityList를 보내던 방식에서 paging을 보내는 방식으로 변경
+         * 따라서, 템플릿 엔진도 바꿔주어야 함
+         */
+        Page<QuestionEntity> paging = this.questionService.getList(page);
+        model.addAttribute("paging", paging);
+
+
+
         return "question_list";
     }
 
