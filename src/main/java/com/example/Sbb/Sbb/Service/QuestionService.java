@@ -55,7 +55,7 @@ public class QuestionService {
          */
         List<Sort.Order> sort = new ArrayList<>();
         sort.add(Sort.Order.desc("createDateTime"));
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, 15, Sort.by(sort));
         return this.questionRepository.findAll(pageable);
     }
 }
