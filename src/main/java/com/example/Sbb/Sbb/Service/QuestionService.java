@@ -42,12 +42,12 @@ public class QuestionService {
         this.questionRepository.save(questionEntity);
     }
 
-    /*
+    /**
      * 정수 타입의 페이지 번호를 입력받아 해당 페이지의 질문 목록을 리턴
      * PageRequest.of(page, 10)에서 page는 조회할 페이지의 번호이고, 10은 한 페이지에 보여줄 게시물의 개수
      */
     public Page<QuestionEntity> getList(int page){
-        /*
+        /**
          * 게시물을 역순으로 조회하기 위해서 PageRequest.of 메소드의 세번째 파라미터로 Sort 객체 전달해야함
          * Sort.Order 객체로 구성된 리스트에 Sort.Order 객체를 추가
          * Sort.by(소트 리스트)로 소트 객체 생성 가능
