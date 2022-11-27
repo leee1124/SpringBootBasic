@@ -1,4 +1,4 @@
-package com.example.Sbb.Sbb.user;
+package com.example.Sbb.Sbb.Entity;
 
 import lombok.Getter;
 import lombok.Setter;
