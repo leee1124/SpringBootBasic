@@ -1,7 +1,11 @@
 package com.example.Sbb.Sbb;
 
+import com.example.Sbb.Sbb.Service.UserSecurityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,7 +22,10 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final UserSecurityService userSecurityService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         //모든 인증되지 않은 요청을 허락 => 로그인 하지 않아도 모든 페이지에 접근할 수 있음
@@ -31,7 +38,14 @@ public class SecurityConfig {
                 .headers()
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(
                         XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN
-                ));
+                ))
+                //스프링 시큐리티의 로그인 설정을 담당하는 부분
+                //로그인 페이지의 url은 /user/login
+                //로그인 성공하면 이동하는 디폴트 페이지는 루트 url(/)임
+                .and()
+                .formLogin()
+                .loginPage("/user/login")
+                .defaultSuccessUrl("/");
         return http.build();
     }
 
@@ -42,4 +56,16 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
+    /**
+     * 스프링 시큐리티의 인증 담당
+     * @param authenticationConfiguration
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    public AuthenticationManager authenticationManager
+            (AuthenticationConfiguration authenticationConfiguration) throws Exception{
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 }
