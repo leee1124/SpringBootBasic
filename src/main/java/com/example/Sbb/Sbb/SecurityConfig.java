@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 /**
@@ -45,7 +46,16 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/user/login")
-                .defaultSuccessUrl("/");
+                .defaultSuccessUrl("/")
+
+                //스프링 시큐리티의 로그아웃 담당
+                //로그아웃 성공하면 루트 URL로 이동
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                ;
         return http.build();
     }
 
