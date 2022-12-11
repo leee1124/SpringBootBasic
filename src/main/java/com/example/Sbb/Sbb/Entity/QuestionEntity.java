@@ -25,4 +25,7 @@ public class QuestionEntity {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<AnswerEntity> answerList;
+
+    @ManyToOne
+    private SiteUserEntity author;
 }
