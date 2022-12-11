@@ -1,9 +1,11 @@
 package com.example.Sbb.Sbb.Controller;
 
 import com.example.Sbb.Sbb.Entity.QuestionEntity;
+import com.example.Sbb.Sbb.Entity.SiteUserEntity;
 import com.example.Sbb.Sbb.Form.AnswerForm;
 import com.example.Sbb.Sbb.Form.QuestionForm;
 import com.example.Sbb.Sbb.Service.QuestionService;
+import com.example.Sbb.Sbb.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 
@@ -25,6 +28,7 @@ import java.util.List;
 @Controller
 public class QuestionController {
     private final QuestionService questionService;
+    private final UserService userService;
 
 
     /**
@@ -70,11 +74,12 @@ public class QuestionController {
     }
 
     @PostMapping("/create")
-    public String createQuestion(@Valid QuestionForm questionForm, BindingResult bindingResult){
+    public String createQuestion(@Valid QuestionForm questionForm, BindingResult bindingResult, Principal principal){
         if(bindingResult.hasErrors()){
             return "question_form";
         }
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent());
+        SiteUserEntity siteUserEntity = this.userService.getUser(principal.getName());
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUserEntity);
         return "redirect:/question/list";
     }
 
