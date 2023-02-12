@@ -24,4 +24,7 @@ public class AnswerEntity {
 //
     @ManyToOne
     private QuestionEntity question;
+
+    @ManyToOne
+    private SiteUserEntity author;
 }
