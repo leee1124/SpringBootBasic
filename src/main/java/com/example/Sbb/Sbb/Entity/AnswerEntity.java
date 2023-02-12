@@ -14,6 +14,9 @@ public class AnswerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne
+    private SiteUserEntity author;
+
     @Column(columnDefinition = "TEXT")
     private String content;
 

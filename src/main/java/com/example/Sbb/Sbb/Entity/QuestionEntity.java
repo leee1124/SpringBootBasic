@@ -15,6 +15,9 @@ public class QuestionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne
+    private SiteUserEntity author;
+
     @Column(length = 300)
     private String subject;
 
