@@ -1,4 +1,4 @@
-package com.example.Sbb.Sbb.Service;
+package com.example.Sbb.Sbb.user;
 
 import com.example.Sbb.Sbb.user.SiteUserEntity;
 import com.example.Sbb.Sbb.user.UserRepository;
