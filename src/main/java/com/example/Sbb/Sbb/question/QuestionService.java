@@ -1,9 +1,7 @@
-package com.example.Sbb.Sbb.Service;
+package com.example.Sbb.Sbb.question;
 
 import com.example.Sbb.Sbb.DataNotFoundException;
-import com.example.Sbb.Sbb.Entity.QuestionEntity;
-import com.example.Sbb.Sbb.Entity.SiteUserEntity;
-import com.example.Sbb.Sbb.Repository.QuestionRepository;
+import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

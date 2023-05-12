@@ -1,5 +1,7 @@
-package com.example.Sbb.Sbb.Entity;
+package com.example.Sbb.Sbb.answer;
 
+import com.example.Sbb.Sbb.user.SiteUserEntity;
+import com.example.Sbb.Sbb.question.QuestionEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,9 +15,6 @@ public class AnswerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @ManyToOne
-    private SiteUserEntity author;
 
     @Column(columnDefinition = "TEXT")
     private String content;

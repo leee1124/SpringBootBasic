@@ -1,11 +1,9 @@
-package com.example.Sbb.Sbb.Controller;
+package com.example.Sbb.Sbb.answer;
 
-import com.example.Sbb.Sbb.Entity.QuestionEntity;
-import com.example.Sbb.Sbb.Entity.SiteUserEntity;
-import com.example.Sbb.Sbb.Form.AnswerForm;
-import com.example.Sbb.Sbb.Service.AnswerService;
-import com.example.Sbb.Sbb.Service.QuestionService;
-import com.example.Sbb.Sbb.Service.UserService;
+import com.example.Sbb.Sbb.question.QuestionEntity;
+import com.example.Sbb.Sbb.user.SiteUserEntity;
+import com.example.Sbb.Sbb.question.QuestionService;
+import com.example.Sbb.Sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

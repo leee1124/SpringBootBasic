@@ -1,8 +1,8 @@
 package com.example.Sbb.Sbb.Service;
 
-import com.example.Sbb.Sbb.Entity.SiteUserEntity;
-import com.example.Sbb.Sbb.Repository.UserRepository;
-import com.example.Sbb.Sbb.Role.UserRole;
+import com.example.Sbb.Sbb.user.SiteUserEntity;
+import com.example.Sbb.Sbb.user.UserRepository;
+import com.example.Sbb.Sbb.user.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

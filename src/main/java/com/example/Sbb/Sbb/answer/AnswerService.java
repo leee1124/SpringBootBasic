@@ -1,9 +1,7 @@
-package com.example.Sbb.Sbb.Service;
+package com.example.Sbb.Sbb.answer;
 
-import com.example.Sbb.Sbb.Entity.AnswerEntity;
-import com.example.Sbb.Sbb.Entity.QuestionEntity;
-import com.example.Sbb.Sbb.Entity.SiteUserEntity;
-import com.example.Sbb.Sbb.Repository.AnswerRepository;
+import com.example.Sbb.Sbb.question.QuestionEntity;
+import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,5 @@
-package com.example.Sbb.Sbb.Repository;
+package com.example.Sbb.Sbb.question;
 
-import com.example.Sbb.Sbb.Entity.QuestionEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,11 +1,8 @@
-package com.example.Sbb.Sbb.Controller;
+package com.example.Sbb.Sbb.question;
 
-import com.example.Sbb.Sbb.Entity.QuestionEntity;
-import com.example.Sbb.Sbb.Entity.SiteUserEntity;
-import com.example.Sbb.Sbb.Form.AnswerForm;
-import com.example.Sbb.Sbb.Form.QuestionForm;
-import com.example.Sbb.Sbb.Service.QuestionService;
-import com.example.Sbb.Sbb.Service.UserService;
+import com.example.Sbb.Sbb.user.SiteUserEntity;
+import com.example.Sbb.Sbb.answer.AnswerForm;
+import com.example.Sbb.Sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.example.Sbb.Sbb.Form;
+package com.example.Sbb.Sbb.answer;
 
 import lombok.Getter;
 import lombok.Setter;

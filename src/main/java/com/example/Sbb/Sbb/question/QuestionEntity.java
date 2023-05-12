@@ -1,5 +1,7 @@
-package com.example.Sbb.Sbb.Entity;
+package com.example.Sbb.Sbb.question;
 
+import com.example.Sbb.Sbb.answer.AnswerEntity;
+import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.Getter;
 import lombok.Setter;
 

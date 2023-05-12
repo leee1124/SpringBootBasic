@@ -1,6 +1,5 @@
-package com.example.Sbb.Sbb.Repository;
+package com.example.Sbb.Sbb.user;
 
-import com.example.Sbb.Sbb.Entity.SiteUserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

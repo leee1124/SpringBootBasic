@@ -1,4 +1,4 @@
-package com.example.Sbb.Sbb.Role;
+package com.example.Sbb.Sbb.user;
 
 import lombok.Getter;
 
