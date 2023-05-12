@@ -1,13 +1,17 @@
 package com.example.Sbb.Sbb.user;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
-@Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SiteUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +24,13 @@ public class SiteUserEntity {
 
     @Column(unique = true)
     private String email;
+
+    SiteUserDTO toDTO(){
+        return SiteUserDTO.builder()
+                .id(id)
+                .username(username)
+                .password(password)
+                .email(email)
+                .build();
+    }
 }

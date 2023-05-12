@@ -1,7 +1,7 @@
 package com.example.Sbb.Sbb.answer;
 
-import com.example.Sbb.Sbb.question.QuestionEntity;
-import com.example.Sbb.Sbb.user.SiteUserEntity;
+import com.example.Sbb.Sbb.question.QuestionDTO;
+import com.example.Sbb.Sbb.user.SiteUserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +10,11 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Service
 public class AnswerService {
-    private final AnswerRepository answerRepository;
+    private final AnswerDAO answerDAO;
 
-    public AnswerEntity create(QuestionEntity questionEntity, String content, SiteUserEntity author){
-        AnswerEntity answerEntity = new AnswerEntity();
-        answerEntity.setContent(content);
-        answerEntity.setCreateDate(LocalDateTime.now());
-        answerEntity.setQuestion(questionEntity);
-        answerEntity.setAuthor(author);
-        this.answerRepository.save(answerEntity);
-        return answerEntity;
+    public AnswerDTO create(QuestionDTO questionDTO, String content, SiteUserDTO siteUserDTO){
+        AnswerDTO answerDTO = new AnswerDTO(questionDTO.getId(), content, LocalDateTime.now(), questionDTO.toEntity(), siteUserDTO.toEntity());
+        this.answerDAO.saveAnswer(answerDTO.toEntity());
+        return answerDTO;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.Sbb.Sbb.question;
 
 import com.example.Sbb.Sbb.DataNotFoundException;
+import com.example.Sbb.Sbb.user.SiteUserDTO;
 import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,22 +25,20 @@ public class QuestionService {
     }
 
 
-    public QuestionEntity getQuestion(Integer id){
-        Optional<QuestionEntity> questionEntity = this.questionRepository.findById(id);
-        if(questionEntity.isPresent()) {
-            return questionEntity.get();
-        }else{
-            throw new DataNotFoundException("question not found");
-        }
+    public QuestionDTO getQuestion(Integer id){
+        QuestionEntity questionEntity = this.questionRepository.findById(id).orElseThrow(() -> new DataNotFoundException("question not found"));
+        QuestionDTO questionDTO = new QuestionDTO(questionEntity.getId(), questionEntity.getSubject(), questionEntity.getContent(),
+                questionEntity.getCreateDateTime(), questionEntity.getAnswerList(), questionEntity.getAuthor(), questionEntity.getModifyDate());
+        return questionDTO;
     }
 
-    public void create(String subject, String content, SiteUserEntity author){
-        QuestionEntity questionEntity = new QuestionEntity();
-        questionEntity.setSubject(subject);
-        questionEntity.setContent(content);
-        questionEntity.setCreateDateTime(LocalDateTime.now());
-        questionEntity.setAuthor(author);
-        this.questionRepository.save(questionEntity);
+    public void create(String subject, String content, SiteUserDTO siteUserDTO){
+        QuestionDTO questionDTO = new QuestionDTO();
+        questionDTO.setSubject(subject);
+        questionDTO.setContent(content);
+        questionDTO.setCreateDateTime(LocalDateTime.now());
+        questionDTO.setAuthor(siteUserDTO.toEntity());
+        this.questionRepository.save(questionDTO.toEntity());
     }
 
     /**

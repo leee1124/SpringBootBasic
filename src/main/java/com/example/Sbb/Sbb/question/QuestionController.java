@@ -1,6 +1,6 @@
 package com.example.Sbb.Sbb.question;
 
-import com.example.Sbb.Sbb.user.SiteUserEntity;
+import com.example.Sbb.Sbb.user.SiteUserDTO;
 import com.example.Sbb.Sbb.answer.AnswerForm;
 import com.example.Sbb.Sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -65,8 +65,8 @@ public class QuestionController {
      */
     @RequestMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
-        QuestionEntity questionEntity = this.questionService.getQuestion(id);
-        model.addAttribute("question", questionEntity);
+        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        model.addAttribute("question", questionDTO);
         return "question_detail";
     }
 
@@ -76,8 +76,8 @@ public class QuestionController {
         if(bindingResult.hasErrors()){
             return "question_form";
         }
-        SiteUserEntity siteUserEntity = this.userService.getUser(principal.getName());
-        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUserEntity);
+        SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
+        this.questionService.create(questionForm.getSubject(), questionForm.getContent(), siteUserDTO);
         return "redirect:/question/list";
     }
 

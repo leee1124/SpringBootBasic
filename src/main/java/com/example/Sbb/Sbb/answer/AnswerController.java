@@ -1,7 +1,7 @@
 package com.example.Sbb.Sbb.answer;
 
-import com.example.Sbb.Sbb.question.QuestionEntity;
-import com.example.Sbb.Sbb.user.SiteUserEntity;
+import com.example.Sbb.Sbb.question.QuestionDTO;
+import com.example.Sbb.Sbb.user.SiteUserDTO;
 import com.example.Sbb.Sbb.question.QuestionService;
 import com.example.Sbb.Sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +37,13 @@ public class AnswerController {
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable("id") Integer id,
                                @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal){
-        QuestionEntity questionEntity = this.questionService.getQuestion(id);
-        SiteUserEntity siteUserEntity = this.userService.getUser(principal.getName());
+        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
         if(bindingResult.hasErrors()){
-            model.addAttribute("question", questionEntity);
+            model.addAttribute("question", questionDTO);
             return "question_detail";
         }
-        this.answerService.create(questionEntity, answerForm.getContent(), siteUserEntity);
+        this.answerService.create(questionDTO, answerForm.getContent(), siteUserDTO);
         return String.format("redirect:/question/detail/%s", id);
     }
 }

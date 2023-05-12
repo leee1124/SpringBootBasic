@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -13,16 +12,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SiteUserEntity create(String username, String email, String password){
-        SiteUserEntity siteUserEntity = new SiteUserEntity();
-        siteUserEntity.setUsername(username);
-        siteUserEntity.setEmail(email);
+    public SiteUserDTO create(String username, String email, String password){
+        SiteUserDTO siteUserDTO = new SiteUserDTO();
+        siteUserDTO.setUsername(username);
+        siteUserDTO.setEmail(email);
 
         //패스워드는 암호화해서 저장
-        siteUserEntity.setPassword(passwordEncoder.encode(password));
+        siteUserDTO.setPassword(passwordEncoder.encode(password));
+        this.userRepository.save(siteUserDTO.toEntity());
 
-        this.userRepository.save(siteUserEntity);
-        return siteUserEntity;
+        return siteUserDTO;
     }
 
     /**
@@ -31,12 +30,9 @@ public class UserService {
      * @param username
      * @return
      */
-    public SiteUserEntity getUser(String username){
-        Optional<SiteUserEntity> siteUser = this.userRepository.findByUsername(username);
-        if(siteUser.isPresent()){
-            return siteUser.get();
-        }else{
-            throw new DataNotFoundException("siteuser not found");
-        }
+    public SiteUserDTO getUser(String username){
+        SiteUserEntity siteUser = this.userRepository.findByUsername(username).orElseThrow(()->new DataNotFoundException("siteuser not found"));
+        SiteUserDTO siteUserDTO = new SiteUserDTO(siteUser.getId(), siteUser.getUsername(), siteUser.getPassword(), siteUser.getEmail());
+        return siteUserDTO;
     }
 }

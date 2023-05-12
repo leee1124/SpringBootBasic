@@ -9,33 +9,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@Entity
-@Builder
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Builder
+public class QuestionDTO {
     private Integer id;
-
-    @Column(length = 300)
     private String subject;
-
-    @Column(columnDefinition = "TEXT")
     private String content;
-
     private LocalDateTime createDateTime;
-
-    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<AnswerEntity> answerList;
-
-    @ManyToOne
     private SiteUserEntity author;
-
     private LocalDateTime modifyDate;
 
-    public QuestionDTO toDTO(){
-        return QuestionDTO.builder()
+    public QuestionEntity toEntity(){
+        return QuestionEntity.builder()
                 .id(id)
                 .subject(subject)
                 .content(content)

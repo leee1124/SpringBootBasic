@@ -1,35 +1,25 @@
 package com.example.Sbb.Sbb.answer;
 
-import com.example.Sbb.Sbb.user.SiteUserEntity;
 import com.example.Sbb.Sbb.question.QuestionEntity;
-import lombok.*;
-
-import javax.persistence.*;
+import com.example.Sbb.Sbb.user.SiteUserEntity;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Getter
-@Entity
+@Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class AnswerEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AnswerDTO {
+
     private Integer id;
-
-    @Column(columnDefinition = "TEXT")
     private String content;
-
     private LocalDateTime createDate;
-//
-    @ManyToOne
     private QuestionEntity question;
-
-    @ManyToOne
     private SiteUserEntity author;
 
-    public AnswerDTO toDTO(){
-        return AnswerDTO.builder()
+    public AnswerEntity toEntity(){
+        return AnswerEntity.builder()
                 .id(id)
                 .content(content)
                 .createDate(createDate)
@@ -37,5 +27,4 @@ public class AnswerEntity {
                 .author(author)
                 .build();
     }
-
 }
