@@ -2,7 +2,7 @@ package com.example.Sbb.Sbb.question;
 
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 import com.example.Sbb.Sbb.answer.AnswerForm;
-import com.example.Sbb.Sbb.user.UserService;
+import com.example.Sbb.Sbb.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,8 +24,8 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Controller
 public class QuestionController {
-    private final QuestionService questionService;
-    private final UserService userService;
+    private final QuestionServiceImpl questionService;
+    private final UserServiceImpl userService;
 
 
     /**

@@ -2,8 +2,8 @@ package com.example.Sbb.Sbb.answer;
 
 import com.example.Sbb.Sbb.question.QuestionDTO;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
-import com.example.Sbb.Sbb.question.QuestionService;
-import com.example.Sbb.Sbb.user.UserService;
+import com.example.Sbb.Sbb.question.QuestionServiceImpl;
+import com.example.Sbb.Sbb.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,9 +20,9 @@ import java.security.Principal;
 @RequestMapping("/answer") //URL 프리픽스
 @RequiredArgsConstructor
 public class AnswerController {
-    private final QuestionService questionService;
-    private final AnswerService answerService;
-    private final UserService userService;
+    private final QuestionServiceImpl questionService;
+    private final AnswerServiceImpl answerService;
+    private final UserServiceImpl userService;
 
 
     /*
