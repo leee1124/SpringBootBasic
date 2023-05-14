@@ -25,8 +25,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     public QuestionDTO getQuestion(Integer id){
         QuestionEntity questionEntity = this.questionRepository.findById(id).orElseThrow(() -> new DataNotFoundException("question not found"));
-        QuestionDTO questionDTO = new QuestionDTO(questionEntity.getId(), questionEntity.getSubject(), questionEntity.getContent(),
-                questionEntity.getCreateDateTime(), questionEntity.getAnswerList(), questionEntity.getAuthor(), questionEntity.getModifyDate());
+        QuestionDTO questionDTO = questionEntity.toDTO();
         return questionDTO;
     }
 
@@ -35,7 +34,15 @@ public class QuestionServiceImpl implements QuestionService {
         questionDTO.setSubject(subject);
         questionDTO.setContent(content);
         questionDTO.setCreateDateTime(LocalDateTime.now());
+        questionDTO.setModifyDateTime(LocalDateTime.now());
         questionDTO.setAuthor(siteUserDTO.toEntity());
+        this.questionRepository.save(questionDTO.toEntity());
+    }
+
+    public void modify(QuestionDTO questionDTO, String subject, String content){
+        questionDTO.setSubject(subject);
+        questionDTO.setContent(content);
+        questionDTO.setModifyDateTime(LocalDateTime.now());
         this.questionRepository.save(questionDTO.toEntity());
     }
 

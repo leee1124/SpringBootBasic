@@ -12,9 +12,15 @@ import java.time.LocalDateTime;
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
 
-    public AnswerDTO create(QuestionDTO questionDTO, String content, SiteUserDTO siteUserDTO){
-        AnswerDTO answerDTO = new AnswerDTO(questionDTO.getId(), content, LocalDateTime.now(), questionDTO.toEntity(), siteUserDTO.toEntity());
+    public void create(QuestionDTO questionDTO, String content, SiteUserDTO siteUserDTO){
+        AnswerDTO answerDTO = new AnswerDTO();
+        answerDTO.setId(questionDTO.getId());
+        answerDTO.setContent(content);
+        answerDTO.setCreateDateTime(LocalDateTime.now());
+        answerDTO.setModifyDateTime(LocalDateTime.now());
+        answerDTO.setQuestion(questionDTO.toEntity());
+        answerDTO.setAuthor(siteUserDTO.toEntity());
         this.answerRepository.save(answerDTO.toEntity());
-        return answerDTO;
     }
+
 }

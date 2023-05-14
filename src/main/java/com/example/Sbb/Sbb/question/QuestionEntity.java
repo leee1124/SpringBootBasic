@@ -26,13 +26,14 @@ public class QuestionEntity {
 
     private LocalDateTime createDateTime;
 
+    private LocalDateTime modifyDateTime;
+
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<AnswerEntity> answerList;
 
     @ManyToOne
     private SiteUserEntity author;
 
-    private LocalDateTime modifyDate;
 
     public QuestionDTO toDTO(){
         return QuestionDTO.builder()
@@ -40,9 +41,9 @@ public class QuestionEntity {
                 .subject(subject)
                 .content(content)
                 .createDateTime(createDateTime)
+                .modifyDateTime(modifyDateTime)
                 .answerList(answerList)
                 .author(author)
-                .modifyDate(modifyDate)
                 .build();
     }
 }

@@ -5,14 +5,17 @@ import com.example.Sbb.Sbb.answer.AnswerForm;
 import com.example.Sbb.Sbb.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Optional;
 
 
 /**
@@ -86,5 +89,41 @@ public class QuestionController {
     public String createQuestion(QuestionForm questionForm){
         return "question_form";
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String modifyQuestion(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal){
+        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        if(!questionDTO.getAuthor().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        questionForm.setContent(questionDTO.getContent());
+        questionForm.setSubject(questionDTO.getSubject());
+
+        return "question_form";
+    }
+
+
+    /**
+     * questionForm의 데이터를 검증하고, 로그인한 사용자와 수정하려는 질문의 작성자가 동일한지 검증
+     * 로그인한 사용자와 현재의 사용자가 동일하지 않은 경우 => 수정권한이 없습니다라는 오류 발생
+     * 수정이 완료되면 질문 상세 화면 호출
+     */
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public String modifyQuestion(@Valid QuestionForm questionForm, BindingResult bindingResult,
+                                 @PathVariable("id")Integer id, Principal principal){
+        if(bindingResult.hasErrors()){
+            return "question_form";
+        }
+        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+
+        if(!questionDTO.getAuthor().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        this.questionService.modify(questionDTO,questionForm.getSubject(),questionForm.getContent());
+        return String.format("redirect:/question/detail/%s", id);
+    }
+
 
 }

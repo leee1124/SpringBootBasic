@@ -3,19 +3,21 @@ package com.example.Sbb.Sbb.answer;
 import com.example.Sbb.Sbb.answer.AnswerEntity;
 import com.example.Sbb.Sbb.question.QuestionEntity;
 import com.example.Sbb.Sbb.user.SiteUserEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class AnswerDTO {
 
     private Integer id;
     private String content;
-    private LocalDateTime createDate;
+    private LocalDateTime createDateTime;
+    private LocalDateTime modifyDateTime;
     private QuestionEntity question;
     private SiteUserEntity author;
 
@@ -23,7 +25,8 @@ public class AnswerDTO {
         return AnswerEntity.builder()
                 .id(id)
                 .content(content)
-                .createDate(createDate)
+                .createDateTime(createDateTime)
+                .modifyDateTime(modifyDateTime)
                 .question(question)
                 .author(author)
                 .build();

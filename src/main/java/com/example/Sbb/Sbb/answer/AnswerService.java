@@ -4,5 +4,5 @@ import com.example.Sbb.Sbb.question.QuestionDTO;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 
 public interface AnswerService {
-    public AnswerDTO create(QuestionDTO questionDTO, String content, SiteUserDTO siteUserDTO);
+    public void create(QuestionDTO questionDTO, String content, SiteUserDTO siteUserDTO);
 }

@@ -20,8 +20,9 @@ public class AnswerEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private LocalDateTime createDate;
-//
+    private LocalDateTime createDateTime;
+
+    private LocalDateTime modifyDateTime;
     @ManyToOne
     private QuestionEntity question;
 
@@ -32,7 +33,8 @@ public class AnswerEntity {
         return AnswerDTO.builder()
                 .id(id)
                 .content(content)
-                .createDate(createDate)
+                .createDateTime(createDateTime)
+                .modifyDateTime(modifyDateTime)
                 .question(question)
                 .author(author)
                 .build();

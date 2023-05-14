@@ -18,19 +18,18 @@ public class QuestionDTO {
     private String subject;
     private String content;
     private LocalDateTime createDateTime;
+    private LocalDateTime modifyDateTime;
     private List<AnswerEntity> answerList;
     private SiteUserEntity author;
-    private LocalDateTime modifyDate;
-
     public QuestionEntity toEntity(){
         return QuestionEntity.builder()
                 .id(id)
                 .subject(subject)
                 .content(content)
                 .createDateTime(createDateTime)
+                .modifyDateTime(modifyDateTime)
                 .answerList(answerList)
                 .author(author)
-                .modifyDate(modifyDate)
                 .build();
     }
 }
