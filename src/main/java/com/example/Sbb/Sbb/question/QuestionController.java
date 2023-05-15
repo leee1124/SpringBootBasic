@@ -1,5 +1,6 @@
 package com.example.Sbb.Sbb.question;
 
+import com.example.Sbb.Sbb.answer.AnswerDTO;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 import com.example.Sbb.Sbb.answer.AnswerForm;
 import com.example.Sbb.Sbb.user.UserServiceImpl;
@@ -123,6 +124,17 @@ public class QuestionController {
         }
         this.questionService.modify(questionDTO,questionForm.getSubject(),questionForm.getContent());
         return String.format("redirect:/question/detail/%s", id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String deleteQuestion(Principal principal, @PathVariable("id") Integer id){
+        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        if(!questionDTO.getAuthor().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+        this.questionService.delete(questionDTO);
+        return "redirect:/";
     }
 
 

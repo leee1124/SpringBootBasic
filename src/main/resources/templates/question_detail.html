@@ -19,6 +19,16 @@
                    sec:authorize="isAuthenticated()"
                    th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
                    th:text="수정"></a>
+                <!--/*
+                * 삭제를 실행할 URL을 얻기 위해 th:data-uri 속성 추가
+                * data-uri 속성은 자바스크립트에서 클릭 이벤트 발생시 this.dataset.uri와 같이 사용하여 그 값을 얻을 수 있음
+                * 삭제 버튼이 눌리는 이벤트를 확인할 수 있도록 class 속성에 "delete" 항목 추가
+                * href에 삭제 URL을 직접 사용하지 않고 이러한 방식을 사용하는 이유는 삭제 버튼을 클릭했을때 "정말로 삭제하시겠습니까?" 와 같은 확인 절차가 필요하기 때문
+                */-->
+                <a href="javascript:void(0);" th:data-uri="@{|/question/delete/${question.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:text="삭제"></a>
             </div>
         </div>
     </div>
@@ -37,6 +47,16 @@
                     <div th:text="${#temporals.format(answer.createDateTime, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
+            <div class="my-3">
+                <a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                   th:text="수정"></a>
+                <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}"
+                   class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                   th:text="삭제"></a>
+            </div>
         </div>
     </div>
     <!-- 답변 반복 끝  -->
@@ -48,4 +68,28 @@
         <input type="submit" value="답변등록" class="btn btn-primary my-2">
     </form>
 </div>
+<script layout:fragment="script" type='text/javascript'>
+    /*
+    * delete_elements 상수에 getElementByClassName()을 이용해서 delete클래스를 가진 요소들을 가져옴
+    * delete_elements에는 NodeList 형식으로 가져온 모든 엘리먼트들이 HTMLCollection이라는 유사 배열형식으로 저장됨
+    * 이 유사 배열을 진짜 배열처럼 사용하기 위해서 Array.from()을 이용해서 리스너를 달아주는 것
+    * 배열 안에 들어간 delete 클래스들을 forEach로 순회하여, 해당 요소들에서 클릭 이벤트가 있는 경우 정말로 삭제하시겠습니까?를 출력함
+    *
+    * HTML5 에서 새로 확장된 속성
+    * HTML에 추가의 커스텀 속성을 표시하는데 표준화된 방법을 제공하기 위해 제안됨
+    * "data-*" 어트리뷰트로 표기하며, HTML5 표준 속성처럼 접근할 수 있음
+    * dataset으로도 접근할 수 있는데, data-uri는 dataset.uri로 접근 가능
+    * 확인을 누르면 data-uri 속성에 해당하는 @{|/question/delete/${question.id}|}이 호출됨.
+    * location.href = "이동할 페이지 주소";
+    * 즉, /question/delete/${question.id}로 이동함.
+    * */
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(element => {
+        element.addEventListener('click', () => {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = element.dataset.uri;
+            };
+        });
+    });
+</script>
 </html>

@@ -10,5 +10,6 @@ public interface QuestionService {
     public QuestionDTO getQuestion(Integer id);
     public void create(String subject, String content, SiteUserDTO siteUserDTO);
     public Page<QuestionEntity> getList(int page);
+    public void delete(QuestionDTO questionDTO);
 
 }

@@ -1,5 +1,6 @@
 package com.example.Sbb.Sbb.answer;
 
+import com.example.Sbb.Sbb.DataNotFoundException;
 import com.example.Sbb.Sbb.question.QuestionDTO;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,16 @@ public class AnswerServiceImpl implements AnswerService {
         answerDTO.setQuestion(questionDTO.toEntity());
         answerDTO.setAuthor(siteUserDTO.toEntity());
         this.answerRepository.save(answerDTO.toEntity());
+    }
+
+    public void delete(AnswerDTO answerDTO){
+        this.answerRepository.delete(answerDTO.toEntity());
+    }
+
+    public AnswerDTO getAnswer(Integer id){
+        AnswerEntity answerEntity = this.answerRepository.findById(id).orElseThrow(() -> new DataNotFoundException("answer not found"));
+        AnswerDTO answerDTO = answerEntity.toDTO();
+        return answerDTO;
     }
 
 }

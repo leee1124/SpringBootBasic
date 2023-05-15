@@ -46,6 +46,10 @@ public class QuestionServiceImpl implements QuestionService {
         this.questionRepository.save(questionDTO.toEntity());
     }
 
+    public void delete(QuestionDTO questionDTO){
+        this.questionRepository.delete(questionDTO.toEntity());
+    }
+
     /**
      * 정수 타입의 페이지 번호를 입력받아 해당 페이지의 질문 목록을 리턴
      * PageRequest.of(page, 10)에서 page는 조회할 페이지의 번호이고, 10은 한 페이지에 보여줄 게시물의 개수
