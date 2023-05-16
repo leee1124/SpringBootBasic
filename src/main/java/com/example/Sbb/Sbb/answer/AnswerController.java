@@ -1,9 +1,10 @@
 package com.example.Sbb.Sbb.answer;
 
 import com.example.Sbb.Sbb.question.QuestionDTO;
+import com.example.Sbb.Sbb.question.QuestionForm;
+import com.example.Sbb.Sbb.question.QuestionService;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
-import com.example.Sbb.Sbb.question.QuestionServiceImpl;
-import com.example.Sbb.Sbb.user.UserServiceImpl;
+import com.example.Sbb.Sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,9 +21,9 @@ import java.security.Principal;
 @RequestMapping("/answer") //URL 프리픽스
 @RequiredArgsConstructor
 public class AnswerController {
-    private final QuestionServiceImpl questionService;
-    private final AnswerServiceImpl answerService;
-    private final UserServiceImpl userService;
+    private final QuestionService questionService;
+    private final AnswerService answerService;
+    private final UserService userService;
 
 
     /*
@@ -44,6 +45,23 @@ public class AnswerController {
             return "question_detail";
         }
         this.answerService.create(questionDTO, answerForm.getContent(), siteUserDTO);
+        return String.format("redirect:/question/detail/%s", id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public String modifyQuestion(@Valid AnswerForm answerForm, BindingResult bindingResult,
+                                 @PathVariable("id")Integer id, Principal principal){
+        if(bindingResult.hasErrors()){
+            return "answer_form";
+        }
+
+        AnswerDTO answerDTO = this.answerService.getAnswer(id);
+
+        if(!answerDTO.getAuthor().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        this.answerService.modify(answerDTO, answerForm.getContent());
         return String.format("redirect:/question/detail/%s", id);
     }
 

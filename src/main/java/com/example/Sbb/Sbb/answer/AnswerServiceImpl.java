@@ -28,6 +28,13 @@ public class AnswerServiceImpl implements AnswerService {
         this.answerRepository.delete(answerDTO.toEntity());
     }
 
+    @Override
+    public void modify(AnswerDTO answerDTO, String content) {
+        answerDTO.setContent(content);
+        answerDTO.setModifyDateTime(LocalDateTime.now());
+        this.answerRepository.save(answerDTO.toEntity());
+    }
+
     public AnswerDTO getAnswer(Integer id){
         AnswerEntity answerEntity = this.answerRepository.findById(id).orElseThrow(() -> new DataNotFoundException("answer not found"));
         AnswerDTO answerDTO = answerEntity.toDTO();
