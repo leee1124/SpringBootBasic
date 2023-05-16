@@ -19,8 +19,8 @@ public class AnswerServiceImpl implements AnswerService {
         answerDTO.setContent(content);
         answerDTO.setCreateDateTime(LocalDateTime.now());
         answerDTO.setModifyDateTime(LocalDateTime.now());
-        answerDTO.setQuestion(questionDTO.toEntity());
-        answerDTO.setAuthor(siteUserDTO.toEntity());
+        answerDTO.setQuestion(questionDTO);
+        answerDTO.setAuthor(siteUserDTO);
         this.answerRepository.save(answerDTO.toEntity());
     }
 

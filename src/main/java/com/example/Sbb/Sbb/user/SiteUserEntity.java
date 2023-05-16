@@ -25,7 +25,7 @@ public class SiteUserEntity {
     @Column(unique = true)
     private String email;
 
-    SiteUserDTO toDTO(){
+    public SiteUserDTO toDTO(){
         return SiteUserDTO.builder()
                 .id(id)
                 .username(username)

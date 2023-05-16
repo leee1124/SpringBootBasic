@@ -1,8 +1,8 @@
 package com.example.Sbb.Sbb.answer;
 
-import com.example.Sbb.Sbb.answer.AnswerEntity;
-import com.example.Sbb.Sbb.question.QuestionEntity;
-import com.example.Sbb.Sbb.user.SiteUserEntity;
+
+import com.example.Sbb.Sbb.question.QuestionDTO;
+import com.example.Sbb.Sbb.user.SiteUserDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,8 +18,8 @@ public class AnswerDTO {
     private String content;
     private LocalDateTime createDateTime;
     private LocalDateTime modifyDateTime;
-    private QuestionEntity question;
-    private SiteUserEntity author;
+    private QuestionDTO question;
+    private SiteUserDTO author;
 
     public AnswerEntity toEntity(){
         return AnswerEntity.builder()
@@ -27,8 +27,8 @@ public class AnswerDTO {
                 .content(content)
                 .createDateTime(createDateTime)
                 .modifyDateTime(modifyDateTime)
-                .question(question)
-                .author(author)
+                .question(question.toEntity())
+                .author(author.toEntity())
                 .build();
     }
 }

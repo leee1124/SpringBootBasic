@@ -1,11 +1,14 @@
 package com.example.Sbb.Sbb.question;
 
+import com.example.Sbb.Sbb.answer.AnswerDTO;
 import com.example.Sbb.Sbb.answer.AnswerEntity;
+import com.example.Sbb.Sbb.user.SiteUserDTO;
 import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -19,8 +22,8 @@ public class QuestionDTO {
     private String content;
     private LocalDateTime createDateTime;
     private LocalDateTime modifyDateTime;
-    private List<AnswerEntity> answerList;
-    private SiteUserEntity author;
+    private List<AnswerDTO> answerList;
+    private SiteUserDTO author;
     public QuestionEntity toEntity(){
         return QuestionEntity.builder()
                 .id(id)
@@ -28,8 +31,15 @@ public class QuestionDTO {
                 .content(content)
                 .createDateTime(createDateTime)
                 .modifyDateTime(modifyDateTime)
-                .answerList(answerList)
-                .author(author)
+                .answerList(convertAnswerDTOListToAnswerEntityList(answerList))
+                .author(author.toEntity())
                 .build();
+    }
+    private List<AnswerEntity> convertAnswerDTOListToAnswerEntityList(List<AnswerDTO> answerDTOList){
+        List<AnswerEntity> answerEntityList = new ArrayList<>();
+        for (AnswerDTO answerDTO : answerDTOList) {
+            answerEntityList.add(answerDTO.toEntity());
+        }
+        return answerEntityList;
     }
 }

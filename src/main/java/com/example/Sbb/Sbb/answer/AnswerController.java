@@ -48,6 +48,23 @@ public class AnswerController {
         return String.format("redirect:/question/detail/%s", id);
     }
 
+
+    /**
+     * Answer로 HTTP POST를 보내기 전에 GET으로 answer_form 접속해야함.
+     * answer_form에서 질문을 수정한 후 POST를 보냄
+     */
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String modifyAnswer(AnswerForm answerForm, @PathVariable("id") Integer id, Principal principal){
+        AnswerDTO answerDTO = this.answerService.getAnswer(id);
+        if(!answerDTO.getAuthor().getUsername().equals(principal.getName())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        answerForm.setContent(answerDTO.getContent());
+
+        return "answer_form";
+    }
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modifyQuestion(@Valid AnswerForm answerForm, BindingResult bindingResult,
@@ -62,7 +79,7 @@ public class AnswerController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
         this.answerService.modify(answerDTO, answerForm.getContent());
-        return String.format("redirect:/question/detail/%s", id);
+        return String.format("redirect:/question/detail/%s", answerDTO.getQuestion().getId());
     }
 
     @PreAuthorize("isAuthenticated()")

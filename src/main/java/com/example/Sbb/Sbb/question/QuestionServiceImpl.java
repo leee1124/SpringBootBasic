@@ -35,7 +35,7 @@ public class QuestionServiceImpl implements QuestionService {
         questionDTO.setContent(content);
         questionDTO.setCreateDateTime(LocalDateTime.now());
         questionDTO.setModifyDateTime(LocalDateTime.now());
-        questionDTO.setAuthor(siteUserDTO.toEntity());
+        questionDTO.setAuthor(siteUserDTO);
         this.questionRepository.save(questionDTO.toEntity());
     }
 

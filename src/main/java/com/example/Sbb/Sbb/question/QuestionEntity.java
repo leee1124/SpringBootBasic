@@ -1,11 +1,13 @@
 package com.example.Sbb.Sbb.question;
 
+import com.example.Sbb.Sbb.answer.AnswerDTO;
 import com.example.Sbb.Sbb.answer.AnswerEntity;
 import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -42,8 +44,16 @@ public class QuestionEntity {
                 .content(content)
                 .createDateTime(createDateTime)
                 .modifyDateTime(modifyDateTime)
-                .answerList(answerList)
-                .author(author)
+                .answerList(convertAnswerEntityListToAnswerDTOList(answerList))
+                .author(author.toDTO())
                 .build();
+    }
+
+    private List<AnswerDTO> convertAnswerEntityListToAnswerDTOList(List<AnswerEntity> answerList){
+        List<AnswerDTO> answerDTOList = new ArrayList<>();
+        for(AnswerEntity answerEntity: answerList){
+            answerDTOList.add(answerEntity.toDTO());
+        }
+        return answerDTOList;
     }
 }
