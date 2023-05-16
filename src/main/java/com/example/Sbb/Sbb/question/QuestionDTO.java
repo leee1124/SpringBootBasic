@@ -3,10 +3,9 @@ package com.example.Sbb.Sbb.question;
 import com.example.Sbb.Sbb.answer.AnswerDTO;
 import com.example.Sbb.Sbb.answer.AnswerEntity;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
-import com.example.Sbb.Sbb.user.SiteUserEntity;
+
 import lombok.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +34,12 @@ public class QuestionDTO {
                 .author(author.toEntity())
                 .build();
     }
+
+    /**
+     * List<AnswerDTO>를 List<AnswerEntity>로 변환
+     * @param answerDTOList
+     * @return
+     */
     private List<AnswerEntity> convertAnswerDTOListToAnswerEntityList(List<AnswerDTO> answerDTOList){
         List<AnswerEntity> answerEntityList = new ArrayList<>();
         for (AnswerDTO answerDTO : answerDTOList) {

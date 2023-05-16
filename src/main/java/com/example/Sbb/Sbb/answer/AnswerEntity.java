@@ -35,8 +35,8 @@ public class AnswerEntity {
                 .content(content)
                 .createDateTime(createDateTime)
                 .modifyDateTime(modifyDateTime)
-                .question(question)
-                .author(author)
+                .question(question.toDTO())
+                .author(author.toDTO())
                 .build();
     }
 
