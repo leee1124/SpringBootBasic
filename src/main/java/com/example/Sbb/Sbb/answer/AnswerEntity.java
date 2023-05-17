@@ -29,15 +29,4 @@ public class AnswerEntity {
     @ManyToOne
     private SiteUserEntity author;
 
-    public AnswerDTO toDTO(){
-        return AnswerDTO.builder()
-                .id(id)
-                .content(content)
-                .createDateTime(createDateTime)
-                .modifyDateTime(modifyDateTime)
-                .question(question.toDTO())
-                .author(author.toDTO())
-                .build();
-    }
-
 }

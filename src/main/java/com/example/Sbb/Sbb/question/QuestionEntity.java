@@ -36,24 +36,4 @@ public class QuestionEntity {
     @ManyToOne
     private SiteUserEntity author;
 
-
-    public QuestionDTO toDTO(){
-        return QuestionDTO.builder()
-                .id(id)
-                .subject(subject)
-                .content(content)
-                .createDateTime(createDateTime)
-                .modifyDateTime(modifyDateTime)
-                .answerList(convertAnswerEntityListToAnswerDTOList(answerList))
-                .author(author.toDTO())
-                .build();
-    }
-
-    private List<AnswerDTO> convertAnswerEntityListToAnswerDTOList(List<AnswerEntity> answerList){
-        List<AnswerDTO> answerDTOList = new ArrayList<>();
-        for(AnswerEntity answerEntity: answerList){
-            answerDTOList.add(answerEntity.toDTO());
-        }
-        return answerDTOList;
-    }
 }

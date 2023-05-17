@@ -21,14 +21,4 @@ public class AnswerDTO {
     private QuestionDTO question;
     private SiteUserDTO author;
 
-    public AnswerEntity toEntity(){
-        return AnswerEntity.builder()
-                .id(id)
-                .content(content)
-                .createDateTime(createDateTime)
-                .modifyDateTime(modifyDateTime)
-                .question(question.toEntity())
-                .author(author.toEntity())
-                .build();
-    }
 }
