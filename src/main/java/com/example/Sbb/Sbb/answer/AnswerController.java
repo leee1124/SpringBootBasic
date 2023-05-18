@@ -1,7 +1,6 @@
 package com.example.Sbb.Sbb.answer;
 
 import com.example.Sbb.Sbb.question.QuestionDTO;
-import com.example.Sbb.Sbb.question.QuestionForm;
 import com.example.Sbb.Sbb.question.QuestionService;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 import com.example.Sbb.Sbb.user.UserService;

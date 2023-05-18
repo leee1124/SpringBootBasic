@@ -1,6 +1,5 @@
 package com.example.Sbb.Sbb.question;
 
-import com.example.Sbb.Sbb.answer.AnswerDTO;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 import com.example.Sbb.Sbb.answer.AnswerForm;
 import com.example.Sbb.Sbb.user.UserServiceImpl;
@@ -16,7 +15,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Optional;
 
 
 /**
@@ -67,7 +65,7 @@ public class QuestionController {
      * @RequestMapping(value = "/question/detail/{id}")에서 사용한 id와
      * @PathVariable("id")의 매개변수 이름이 동일해야함
      */
-    @RequestMapping(value = "/detail/{id}")
+    @GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
         QuestionDTO questionDTO = this.questionService.getQuestion(id);
         model.addAttribute("question", questionDTO);

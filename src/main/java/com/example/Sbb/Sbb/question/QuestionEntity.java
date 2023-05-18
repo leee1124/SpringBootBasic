@@ -1,13 +1,11 @@
 package com.example.Sbb.Sbb.question;
 
-import com.example.Sbb.Sbb.answer.AnswerDTO;
 import com.example.Sbb.Sbb.answer.AnswerEntity;
 import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -35,5 +33,7 @@ public class QuestionEntity {
 
     @ManyToOne
     private SiteUserEntity author;
+
+
 
 }
