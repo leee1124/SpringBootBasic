@@ -112,7 +112,7 @@ public class QuestionServiceImpl implements QuestionService {
             answerList.add(answer);
         }
 
-        QuestionDTO questionDTO = QuestionDTO.builder()
+        return QuestionDTO.builder()
                 .id(questionEntity.getId())
                 .subject(questionEntity.getSubject())
                 .content(questionEntity.getContent())
@@ -121,7 +121,5 @@ public class QuestionServiceImpl implements QuestionService {
                 .answerList(answerList)
                 .author(questionEntity.getAuthor().toDTO())
                 .build();
-
-        return questionDTO;
     }
 }
