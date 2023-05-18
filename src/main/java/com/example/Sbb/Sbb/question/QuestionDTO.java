@@ -21,6 +21,12 @@ public class QuestionDTO {
     private List<Answer> answerList;
     private SiteUserDTO author;
 
+
+    /**
+     * QuestionDTO안에 있는 static Answer클래스는 question 정보를 알 필요가 없음
+     * QuestionDTO에 이미 question 정보가 담겨있기 때문
+     * 따라서, AnswerEntity와는 다르게 Question 정보를 빼고, 무한순환참조를 막음
+     */
     @Getter
     @Setter
     public static class Answer {
@@ -31,6 +37,9 @@ public class QuestionDTO {
         private SiteUserDTO author;
     }
 
+    /**
+     * 파라미터가 존재하지 않는 생성자에서 answerList를 생성해 NullPointerException 방지
+     */
     public QuestionDTO() {
         this.answerList = new ArrayList<>();
     }
