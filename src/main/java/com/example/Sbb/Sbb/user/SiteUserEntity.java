@@ -1,5 +1,6 @@
 package com.example.Sbb.Sbb.user;
 
+import com.example.Sbb.Sbb.recommender.RecommenderEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +25,9 @@ public class SiteUserEntity {
 
     @Column(unique = true)
     private String email;
+
+    @ManyToOne
+    private RecommenderEntity recommenderEntity;
 
     public SiteUserDTO toDTO(){
         return SiteUserDTO.builder()

@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Entity
@@ -28,5 +29,8 @@ public class AnswerEntity {
 
     @ManyToOne
     private SiteUserEntity author;
+
+    @ManyToMany
+    private Set<SiteUserEntity> recommender;
 
 }

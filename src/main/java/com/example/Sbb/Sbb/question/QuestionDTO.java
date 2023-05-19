@@ -7,6 +7,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,6 +21,8 @@ public class QuestionDTO {
     private LocalDateTime modifyDateTime;
     private List<Answer> answerList;
     private SiteUserDTO author;
+
+    private Set<recommender> recommenerSet;
 
 
     /**
@@ -42,6 +45,15 @@ public class QuestionDTO {
      */
     public QuestionDTO() {
         this.answerList = new ArrayList<>();
+    }
+
+    @Getter
+    @Setter
+    public static class recommender{
+        private Long id;
+        private String username;
+        private String password;
+        private String email;
     }
 
 }

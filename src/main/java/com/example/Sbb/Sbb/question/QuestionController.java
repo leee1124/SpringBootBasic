@@ -26,7 +26,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Controller
 public class QuestionController {
-    private final QuestionServiceImpl questionService;
+    private final QuestionService questionService;
     private final UserServiceImpl userService;
 
 
@@ -135,5 +135,13 @@ public class QuestionController {
         return "redirect:/";
     }
 
+    @PreAuthorize("isAuthenticated")
+    @GetMapping("/vote/{id}")
+    public String recommendQuestion(Principal principal, @PathVariable("id")Integer id){
+        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
+        this.questionService.recommend(siteUserDTO,questionDTO);
+        return String.format("redirect:/question_detail/{id}", id);
+    }
 
 }

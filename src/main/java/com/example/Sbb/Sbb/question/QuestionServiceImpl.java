@@ -72,6 +72,12 @@ public class QuestionServiceImpl implements QuestionService {
         return this.questionRepository.findAll(pageable);
     }
 
+    @Override
+    public void recommend(SiteUserDTO siteUserDTO, QuestionDTO questionDTO) {
+        QuestionEntity questionEntity = this.toEntity(questionDTO);
+
+    }
+
     public QuestionEntity toEntity(QuestionDTO questionDTO) {
         List<AnswerEntity> answerList = new ArrayList<>();
 
