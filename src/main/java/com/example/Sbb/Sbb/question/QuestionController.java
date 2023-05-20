@@ -136,11 +136,11 @@ public class QuestionController {
     }
 
     @PreAuthorize("isAuthenticated")
-    @GetMapping("/vote/{id}")
+    @GetMapping("/recommend/{id}")
     public String recommendQuestion(Principal principal, @PathVariable("id")Integer id){
         QuestionDTO questionDTO = this.questionService.getQuestion(id);
         SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
-        this.questionService.recommend(siteUserDTO,questionDTO);
+        this.questionService.recommend(questionDTO, siteUserDTO);
         return String.format("redirect:/question_detail/{id}", id);
     }
 

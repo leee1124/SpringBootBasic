@@ -1,7 +1,6 @@
 package com.example.Sbb.Sbb.question;
 
 import com.example.Sbb.Sbb.answer.AnswerEntity;
-import com.example.Sbb.Sbb.recommender.RecommenderEntity;
 import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.*;
 
@@ -36,8 +35,8 @@ public class QuestionEntity {
     @ManyToOne
     private SiteUserEntity author;
 
-    @ManyToOne
-    private RecommenderEntity recommenderEntity;
+    @ManyToMany
+    private Set<SiteUserEntity> recommenderEntitySet;
 
 
 

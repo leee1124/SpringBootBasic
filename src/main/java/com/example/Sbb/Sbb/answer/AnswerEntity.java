@@ -31,6 +31,6 @@ public class AnswerEntity {
     private SiteUserEntity author;
 
     @ManyToMany
-    private Set<SiteUserEntity> recommender;
+    private Set<SiteUserEntity> recommenderEntitySet;
 
 }

@@ -13,8 +13,9 @@ public interface QuestionService {
     public void modify(QuestionDTO questionDTO, String subject, String content);
     public Page<QuestionEntity> getList(int page);
     public void delete(QuestionDTO questionDTO);
-    public void recommend(SiteUserDTO siteUserDTO, QuestionDTO questionDTO);
     public QuestionEntity toEntity(QuestionDTO questionDTO);
     public QuestionDTO toDTO(QuestionEntity questionEntity);
+
+    public void recommend(QuestionDTO questionDTO, SiteUserDTO siteUserDTO);
 
 }

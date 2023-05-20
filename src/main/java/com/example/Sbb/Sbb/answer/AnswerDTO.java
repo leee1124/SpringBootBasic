@@ -8,11 +8,12 @@ import lombok.*;
 
 import javax.persistence.ManyToMany;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class AnswerDTO {
@@ -23,6 +24,7 @@ public class AnswerDTO {
     private LocalDateTime modifyDateTime;
     private QuestionDTO question;
     private SiteUserDTO author;
+    private Set<Recommender> recommenderSet;
 
     /**
      * 한 사람이 여러 질문을 추천할 수 있고, 한 질문은 여러 사람에게 추천받을 수 있음
@@ -30,7 +32,17 @@ public class AnswerDTO {
      * @ManyToMany관계로 속성을 생성하면 새로운 테이블을 생성하여 데이터 관리
      * 테이블에는 서로 연관된 엔티티의 고유번호 2개가 PK로 되어있어 다대다 관계가 성립
      */
-    @ManyToMany
-    private Set<SiteUserDTO> recommender;
+    @Getter
+    @Setter
+    public static class Recommender{
+        private Long id;
+        private String username;
+        private String password;
+        private String email;
+    }
+
+    public AnswerDTO() {
+        this.recommenderSet = new HashSet<>();
+    }
 
 }

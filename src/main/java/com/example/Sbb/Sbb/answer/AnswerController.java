@@ -91,4 +91,13 @@ public class AnswerController {
         this.answerService.delete(answerDTO);
         return String.format("redirect:/question/detail/%s", answerDTO.getQuestion().getId());
     }
+
+    @PreAuthorize("isAuthenticated")
+    @GetMapping("/recommend/{id}")
+    public String recommendAnswer(Principal principal, @PathVariable("id")Integer id){
+        AnswerDTO answerDTO = this.answerService.getAnswer(id);
+        SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
+        this.answerService.recommend(answerDTO, siteUserDTO);
+        return String.format("redirect:/question_detail/%s", answerDTO.getQuestion().getId());
+    }
 }

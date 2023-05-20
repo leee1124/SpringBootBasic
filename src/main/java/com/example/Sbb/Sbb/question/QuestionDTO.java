@@ -1,11 +1,13 @@
 package com.example.Sbb.Sbb.question;
 
+import com.example.Sbb.Sbb.answer.AnswerDTO;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +24,7 @@ public class QuestionDTO {
     private List<Answer> answerList;
     private SiteUserDTO author;
 
-    private Set<recommender> recommenerSet;
+    private Set<Recommender> recommenderSet;
 
 
     /**
@@ -37,24 +39,26 @@ public class QuestionDTO {
         private String content;
         private LocalDateTime createDateTime;
         private LocalDateTime modifyDateTime;
+        private Set<AnswerDTO.Recommender> recommenderSet;
         private SiteUserDTO author;
     }
 
-    /**
-     * 파라미터가 존재하지 않는 생성자에서 answerList를 생성해 NullPointerException 방지
-     */
-    public QuestionDTO() {
-        this.answerList = new ArrayList<>();
-    }
+
 
     @Getter
     @Setter
-    public static class recommender{
+    public static class Recommender{
         private Long id;
         private String username;
         private String password;
         private String email;
     }
-
+    /**
+     * 파라미터가 존재하지 않는 생성자에서 answerList, recommenderSet을 생성해 NullPointerException 방지
+     */
+    public QuestionDTO() {
+        this.answerList = new ArrayList<>();
+        this.recommenderSet = new HashSet<>();
+    }
 }
 
