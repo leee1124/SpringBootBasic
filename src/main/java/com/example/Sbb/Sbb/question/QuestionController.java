@@ -142,7 +142,7 @@ public class QuestionController {
         QuestionDTO questionDTO = this.questionService.getQuestion(id.longValue());
         SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
         this.questionService.recommend(siteUserDTO, questionDTO);
-        return String.format("redirect:/question_detail/{id}", id.intValue());
+        return String.format("redirect:/question/detail/{id}", id.intValue());
     }
 
 }

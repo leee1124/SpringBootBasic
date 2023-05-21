@@ -1,6 +1,7 @@
 package com.example.Sbb.Sbb.recommend;
 
 
+import com.example.Sbb.Sbb.DataNotFoundException;
 import com.example.Sbb.Sbb.question.QuestionEntity;
 import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class RecommendServiceImpl implements RecommendService {
         this.recommendRepository.questionExist(siteUserEntity.getId(), questionEntity.getId())
                 .ifPresent(
                         (id) -> {
-                            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "이미 추천하셨습니다.");
+                            throw new DataNotFoundException("이미 추천하셨습니다.");
                         });
         QuestionRecommendEntity questionRecommendEntity = new QuestionRecommendEntity(siteUserEntity,questionEntity);
 

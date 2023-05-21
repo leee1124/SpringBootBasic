@@ -5,9 +5,7 @@ import com.example.Sbb.Sbb.answer.AnswerEntity;
 import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Builder
 @Getter
@@ -16,6 +14,7 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 public class AnswerRecommendEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
