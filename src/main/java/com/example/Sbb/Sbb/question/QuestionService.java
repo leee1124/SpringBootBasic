@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface QuestionService {
     public List<QuestionEntity> getList();
-    public QuestionDTO getQuestion(Integer id);
+    public QuestionDTO getQuestion(Long id);
     public void create(String subject, String content, SiteUserDTO siteUserDTO);
     public void modify(QuestionDTO questionDTO, String subject, String content);
     public Page<QuestionEntity> getList(int page);
@@ -16,6 +16,6 @@ public interface QuestionService {
     public QuestionEntity toEntity(QuestionDTO questionDTO);
     public QuestionDTO toDTO(QuestionEntity questionEntity);
 
-    public void recommend(QuestionDTO questionDTO, SiteUserDTO siteUserDTO);
+    public void recommend(SiteUserDTO siteUserDTO, QuestionDTO questionDTO);
 
 }

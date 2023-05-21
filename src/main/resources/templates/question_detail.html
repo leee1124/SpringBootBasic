@@ -18,7 +18,7 @@
                 <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
                    th:data-uri="@{|/question/recommend/${question.id}|}">
                     추천
-                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(question.recommenderSet)}"></span>
+                    <span class="badge rounded-pill bg-success" th:text="${question.recommend}"></span>
                 </a>
                 <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"
@@ -56,7 +56,7 @@
                 <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
                    th:data-uri="@{|/answer/recommend/${answer.id}|}">
                     추천
-                    <span class="badge rounded-pill bg-success" th:text="${#lists.size(answer.recommenderSet)}"></span>
+                    <span class="badge rounded-pill bg-success" th:text="${question.recommend}"></span>
                 </a>
                 <a th:href="@{|/answer/modify/${answer.id}|}" class="btn btn-sm btn-outline-secondary"
                    sec:authorize="isAuthenticated()"

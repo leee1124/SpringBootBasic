@@ -1,5 +1,6 @@
 package com.example.Sbb.Sbb.question;
 
+import com.example.Sbb.Sbb.recommend.RecommendService;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 import com.example.Sbb.Sbb.answer.AnswerForm;
 import com.example.Sbb.Sbb.user.UserServiceImpl;
@@ -67,7 +68,7 @@ public class QuestionController {
      */
     @GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
-        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        QuestionDTO questionDTO = this.questionService.getQuestion(id.longValue());
         model.addAttribute("question", questionDTO);
         return "question_detail";
     }
@@ -92,7 +93,7 @@ public class QuestionController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
     public String modifyQuestion(QuestionForm questionForm, @PathVariable("id") Integer id, Principal principal){
-        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        QuestionDTO questionDTO = this.questionService.getQuestion(id.longValue());
         if(!questionDTO.getAuthor().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
@@ -115,7 +116,7 @@ public class QuestionController {
         if(bindingResult.hasErrors()){
             return "question_form";
         }
-        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        QuestionDTO questionDTO = this.questionService.getQuestion(id.longValue());
 
         if(!questionDTO.getAuthor().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
@@ -127,7 +128,7 @@ public class QuestionController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
     public String deleteQuestion(Principal principal, @PathVariable("id") Integer id){
-        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        QuestionDTO questionDTO = this.questionService.getQuestion(id.longValue());
         if(!questionDTO.getAuthor().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
@@ -138,10 +139,10 @@ public class QuestionController {
     @PreAuthorize("isAuthenticated")
     @GetMapping("/recommend/{id}")
     public String recommendQuestion(Principal principal, @PathVariable("id")Integer id){
-        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        QuestionDTO questionDTO = this.questionService.getQuestion(id.longValue());
         SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
-        this.questionService.recommend(questionDTO, siteUserDTO);
-        return String.format("redirect:/question_detail/{id}", id);
+        this.questionService.recommend(siteUserDTO, questionDTO);
+        return String.format("redirect:/question_detail/{id}", id.intValue());
     }
 
 }

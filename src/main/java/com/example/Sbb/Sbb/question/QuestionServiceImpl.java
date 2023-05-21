@@ -2,8 +2,8 @@ package com.example.Sbb.Sbb.question;
 
 import com.example.Sbb.Sbb.DataNotFoundException;
 import com.example.Sbb.Sbb.answer.AnswerEntity;
+import com.example.Sbb.Sbb.recommend.RecommendService;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
-import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,22 +13,21 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Service
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
+    private final RecommendService recommendService;
 
     public List<QuestionEntity> getList() {
         return this.questionRepository.findAll();
     }
 
 
-    public QuestionDTO getQuestion(Integer id) {
+    public QuestionDTO getQuestion(Long id) {
         QuestionEntity questionEntity = this.questionRepository.findById(id).orElseThrow(() -> new DataNotFoundException("question not found"));
         return this.toDTO(questionEntity);
     }
@@ -74,7 +73,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     public QuestionEntity toEntity(QuestionDTO questionDTO) {
         List<AnswerEntity> answerList = new ArrayList<>();
-        Set<SiteUserEntity> recommenderSet = new HashSet<>();
 
         for (QuestionDTO.Answer answer : questionDTO.getAnswerList()) {
             AnswerEntity answerEntity = AnswerEntity.builder()
@@ -87,15 +85,7 @@ public class QuestionServiceImpl implements QuestionService {
             answerList.add(answerEntity);
         }
 
-        for(QuestionDTO.Recommender recommender : questionDTO.getRecommenderSet()){
-            SiteUserEntity siteUserEntity = SiteUserEntity.builder()
-                    .id(recommender.getId())
-                    .email(recommender.getEmail())
-                    .password(recommender.getPassword())
-                    .username(recommender.getUsername())
-                    .build();
-            recommenderSet.add(siteUserEntity);
-        }
+
 
         return QuestionEntity.builder()
                 .id(questionDTO.getId())
@@ -103,7 +93,6 @@ public class QuestionServiceImpl implements QuestionService {
                 .content(questionDTO.getContent())
                 .createDateTime(questionDTO.getCreateDateTime())
                 .modifyDateTime(questionDTO.getModifyDateTime())
-                .recommenderEntitySet(recommenderSet)
                 .answerList(answerList)
                 .author(questionDTO.getAuthor().toEntity())
                 .build();
@@ -111,7 +100,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     public QuestionDTO toDTO(QuestionEntity questionEntity) {
         List<QuestionDTO.Answer> answerList = new ArrayList<>();
-        Set<QuestionDTO.Recommender> recommenderSet = new HashSet<>();
 
         for (AnswerEntity answerEntity : questionEntity.getAnswerList()) {
             QuestionDTO.Answer answer = new QuestionDTO.Answer();
@@ -124,30 +112,20 @@ public class QuestionServiceImpl implements QuestionService {
             answerList.add(answer);
         }
 
-        for(SiteUserEntity siteUserEntity : questionEntity.getRecommenderEntitySet()){
-            QuestionDTO.Recommender recommender = new QuestionDTO.Recommender();
-            recommender.setId(siteUserEntity.getId());
-            recommender.setEmail(siteUserEntity.getEmail());
-            recommender.setPassword(siteUserEntity.getPassword());
-            recommender.setUsername(siteUserEntity.getUsername());
-            recommenderSet.add(recommender);
-        }
 
         return QuestionDTO.builder()
                 .id(questionEntity.getId())
                 .subject(questionEntity.getSubject())
                 .content(questionEntity.getContent())
+                .recommend(recommendService.getQuestionRecommendCount(questionEntity.getId()))
                 .createDateTime(questionEntity.getCreateDateTime())
                 .modifyDateTime(questionEntity.getModifyDateTime())
-                .recommenderSet(recommenderSet)
                 .answerList(answerList)
                 .author(questionEntity.getAuthor().toDTO())
                 .build();
     }
 
-    public void recommend(QuestionDTO questionDTO, SiteUserDTO siteUserDTO){
-        QuestionEntity questionEntity = this.toEntity(questionDTO);
-        questionEntity.getRecommenderEntitySet().add(siteUserDTO.toEntity());
-        this.questionRepository.save(questionEntity);
+    public void recommend(SiteUserDTO siteUserDTO, QuestionDTO questionDTO){
+        recommendService.recommend(siteUserDTO.toEntity(), this.toEntity(questionDTO));
     }
 }
