@@ -3,20 +3,19 @@ package com.example.Sbb.Sbb.answer;
 import com.example.Sbb.Sbb.DataNotFoundException;
 import com.example.Sbb.Sbb.question.QuestionDTO;
 import com.example.Sbb.Sbb.question.QuestionService;
+import com.example.Sbb.Sbb.recommend.RecommendService;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
-import com.example.Sbb.Sbb.user.SiteUserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionService questionService;
+    private final RecommendService recommendService;
 
     public void create(QuestionDTO questionDTO, String content, SiteUserDTO siteUserDTO){
         AnswerDTO answerDTO = new AnswerDTO();
@@ -47,44 +46,24 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     public AnswerDTO toDTO(AnswerEntity answerEntity){
-        Set<AnswerDTO.Recommender> recommenderSet = new HashSet<>();
-
-        for(SiteUserEntity siteUserEntity : answerEntity.getRecommenderEntitySet()){
-            AnswerDTO.Recommender recommender = new AnswerDTO.Recommender();
-            recommender.setId(siteUserEntity.getId());
-            recommender.setEmail(siteUserEntity.getEmail());
-            recommender.setPassword(siteUserEntity.getPassword());
-            recommender.setUsername(siteUserEntity.getUsername());
-            recommenderSet.add(recommender);
-        }
 
         return AnswerDTO.builder()
                 .id(answerEntity.getId())
                 .content(answerEntity.getContent())
                 .createDateTime(answerEntity.getCreateDateTime())
                 .modifyDateTime(answerEntity.getModifyDateTime())
+                .recommend(recommendService.getAnswerRecommendCount(answerEntity.getId()))
                 .question(questionService.toDTO(answerEntity.getQuestion()))
                 .author(answerEntity.getAuthor().toDTO())
                 .build();
     }
     public AnswerEntity toEntity(AnswerDTO answerDTO){
-        Set<SiteUserEntity> recommenderSet = new HashSet<>();
-        for(AnswerDTO.Recommender recommender : answerDTO.getRecommenderSet()){
-            SiteUserEntity siteUserEntity = SiteUserEntity.builder()
-                    .id(recommender.getId())
-                    .email(recommender.getEmail())
-                    .password(recommender.getPassword())
-                    .username(recommender.getUsername())
-                    .build();
-            recommenderSet.add(siteUserEntity);
-        }
 
         return AnswerEntity.builder()
                 .id(answerDTO.getId())
                 .content(answerDTO.getContent())
                 .createDateTime(answerDTO.getCreateDateTime())
                 .modifyDateTime(answerDTO.getModifyDateTime())
-                .recommenderEntitySet(recommenderSet)
                 .question(questionService.toEntity(answerDTO.getQuestion()))
                 .author(answerDTO.getAuthor().toEntity())
                 .build();
@@ -99,8 +78,6 @@ public class AnswerServiceImpl implements AnswerService {
      */
     @Override
     public void recommend(AnswerDTO answerDTO, SiteUserDTO siteUserDTO) {
-        AnswerEntity answerEntity = this.toEntity(answerDTO);
-        answerEntity.getRecommenderEntitySet().add(siteUserDTO.toEntity());
-        this.answerRepository.save(answerEntity);
+
     }
 }

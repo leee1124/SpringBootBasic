@@ -37,7 +37,7 @@ public class AnswerController {
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable("id") Integer id,
                                @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal){
-        QuestionDTO questionDTO = this.questionService.getQuestion(id);
+        QuestionDTO questionDTO = this.questionService.getQuestion(id.longValue());
         SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
         if(bindingResult.hasErrors()){
             model.addAttribute("question", questionDTO);

@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Getter
 @Entity
@@ -16,7 +15,7 @@ import java.util.Set;
 public class AnswerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -29,8 +28,4 @@ public class AnswerEntity {
 
     @ManyToOne
     private SiteUserEntity author;
-
-    @ManyToMany
-    private Set<SiteUserEntity> recommenderEntitySet;
-
 }
