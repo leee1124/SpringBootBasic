@@ -29,7 +29,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     public QuestionDTO getQuestion(Long id) {
         QuestionEntity questionEntity = this.questionRepository.findById(id).orElseThrow(() -> new DataNotFoundException("question not found"));
-        return this.toDTO(questionEntity);
+         return this.toDTO(questionEntity);
     }
 
     public void create(String subject, String content, SiteUserDTO siteUserDTO) {
@@ -106,6 +106,7 @@ public class QuestionServiceImpl implements QuestionService {
             answer.setId(answerEntity.getId());
             answer.setAuthor(answerEntity.getAuthor().toDTO());
             answer.setContent(answerEntity.getContent());
+            answer.setRecommend(recommendService.getAnswerRecommendCount(answer.getId()));
             answer.setCreateDateTime(answerEntity.getCreateDateTime());
             answer.setModifyDateTime(answerEntity.getModifyDateTime());
 

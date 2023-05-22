@@ -40,6 +40,7 @@ public class QuestionDTO {
         private LocalDateTime createDateTime;
         private LocalDateTime modifyDateTime;
         private SiteUserDTO author;
+        private Long recommend;
     }
 
 

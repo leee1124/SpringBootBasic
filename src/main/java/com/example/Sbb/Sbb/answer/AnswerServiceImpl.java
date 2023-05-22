@@ -3,7 +3,7 @@ package com.example.Sbb.Sbb.answer;
 import com.example.Sbb.Sbb.DataNotFoundException;
 import com.example.Sbb.Sbb.question.QuestionDTO;
 import com.example.Sbb.Sbb.question.QuestionService;
-import com.example.Sbb.Sbb.recommend.RecommendService;
+import com.example.Sbb.Sbb.recommend.AnswerRecommendService;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class AnswerServiceImpl implements AnswerService {
     private final AnswerRepository answerRepository;
     private final QuestionService questionService;
-    private final RecommendService recommendService;
+    private final AnswerRecommendService recommendService;
 
     public void create(QuestionDTO questionDTO, String content, SiteUserDTO siteUserDTO){
         AnswerDTO answerDTO = new AnswerDTO();
@@ -39,7 +39,7 @@ public class AnswerServiceImpl implements AnswerService {
         this.answerRepository.save(this.toEntity(answerDTO));
     }
 
-    public AnswerDTO getAnswer(Integer id){
+    public AnswerDTO getAnswer(Long id){
         AnswerEntity answerEntity = this.answerRepository.findById(id).orElseThrow(() -> new DataNotFoundException("answer not found"));
         AnswerDTO answerDTO = this.toDTO(answerEntity);
         return answerDTO;
@@ -78,6 +78,6 @@ public class AnswerServiceImpl implements AnswerService {
      */
     @Override
     public void recommend(AnswerDTO answerDTO, SiteUserDTO siteUserDTO) {
-
+        recommendService.recommend(siteUserDTO.toEntity(), this.toEntity(answerDTO));
     }
 }

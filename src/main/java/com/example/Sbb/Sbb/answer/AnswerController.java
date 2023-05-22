@@ -54,7 +54,7 @@ public class AnswerController {
      */
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String modifyAnswer(AnswerForm answerForm, @PathVariable("id") Integer id, Principal principal){
+    public String modifyAnswer(AnswerForm answerForm, @PathVariable("id") Long id, Principal principal){
         AnswerDTO answerDTO = this.answerService.getAnswer(id);
         if(!answerDTO.getAuthor().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
@@ -67,7 +67,7 @@ public class AnswerController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
     public String modifyQuestion(@Valid AnswerForm answerForm, BindingResult bindingResult,
-                                 @PathVariable("id")Integer id, Principal principal){
+                                 @PathVariable("id")Long id, Principal principal){
         if(bindingResult.hasErrors()){
             return "answer_form";
         }
@@ -83,7 +83,7 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String deleteAnswer(Principal principal, @PathVariable("id") Integer id){
+    public String deleteAnswer(Principal principal, @PathVariable("id") Long id){
         AnswerDTO answerDTO = this.answerService.getAnswer(id);
         if(!answerDTO.getAuthor().getUsername().equals(principal.getName())){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
@@ -94,10 +94,10 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated")
     @GetMapping("/recommend/{id}")
-    public String recommendAnswer(Principal principal, @PathVariable("id")Integer id){
+    public String recommendAnswer(Principal principal, @PathVariable("id")Long id){
         AnswerDTO answerDTO = this.answerService.getAnswer(id);
         SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
         this.answerService.recommend(answerDTO, siteUserDTO);
-        return String.format("redirect:/question_detail/%s", answerDTO.getQuestion().getId());
+        return String.format("redirect:/question/detail/%s", answerDTO.getQuestion().getId());
     }
 }
