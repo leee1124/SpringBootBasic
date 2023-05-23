@@ -36,7 +36,8 @@ public class QuestionController {
      * 디폴트값은 0(첫 페이지 보여줌)
      */
     @RequestMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "keyword") String keyword) {
 
 
         /**
@@ -52,10 +53,9 @@ public class QuestionController {
          * 기존에 사용하던 questionEntityList를 보내던 방식에서 paging을 보내는 방식으로 변경
          * 따라서, 템플릿 엔진도 바꿔주어야 함
          */
-        Page<QuestionEntity> paging = this.questionService.getList(page);
+        Page<QuestionEntity> paging = this.questionService.getList(page, keyword);
         model.addAttribute("paging", paging);
-
-
+        model.addAttribute("keyword", keyword);
 
         return "question_list";
     }

@@ -3,6 +3,7 @@ package com.example.Sbb.Sbb.question;
 
 import com.example.Sbb.Sbb.user.SiteUserDTO;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -17,5 +18,6 @@ public interface QuestionService {
     public QuestionDTO toDTO(QuestionEntity questionEntity);
 
     public void recommend(SiteUserDTO siteUserDTO, QuestionDTO questionDTO);
+    public List<QuestionDTO> search(String keyword);
 
 }

@@ -110,7 +110,7 @@ public class QuestionServiceImpl implements QuestionService {
             answer.setCreateDateTime(answerEntity.getCreateDateTime());
             answer.setModifyDateTime(answerEntity.getModifyDateTime());
 
-             answerList.add(answer);
+            answerList.add(answer);
         }
 
 
@@ -122,11 +122,20 @@ public class QuestionServiceImpl implements QuestionService {
                 .createDateTime(questionEntity.getCreateDateTime())
                 .modifyDateTime(questionEntity.getModifyDateTime())
                 .answerList(answerList)
-                 .author(questionEntity.getAuthor().toDTO())
+                .author(questionEntity.getAuthor().toDTO())
                 .build();
     }
 
     public void recommend(SiteUserDTO siteUserDTO, QuestionDTO questionDTO){
         recommendService.recommend(siteUserDTO.toEntity(), this.toEntity(questionDTO));
+    }
+
+    @Override
+    public List<QuestionDTO> search(String keyword) {
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        for(QuestionEntity questionEntity:this.questionRepository.getQuestions(keyword)){
+            questionDTOList.add(this.toDTO(questionEntity));
+        }
+        return questionDTOList;
     }
 }
