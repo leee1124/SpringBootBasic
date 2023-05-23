@@ -110,7 +110,7 @@ public class QuestionServiceImpl implements QuestionService {
             answer.setCreateDateTime(answerEntity.getCreateDateTime());
             answer.setModifyDateTime(answerEntity.getModifyDateTime());
 
-            answerList.add(answer);
+             answerList.add(answer);
         }
 
 
@@ -122,7 +122,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .createDateTime(questionEntity.getCreateDateTime())
                 .modifyDateTime(questionEntity.getModifyDateTime())
                 .answerList(answerList)
-                .author(questionEntity.getAuthor().toDTO())
+                 .author(questionEntity.getAuthor().toDTO())
                 .build();
     }
 

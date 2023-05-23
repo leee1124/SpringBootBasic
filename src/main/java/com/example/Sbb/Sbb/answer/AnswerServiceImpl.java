@@ -19,7 +19,6 @@ public class AnswerServiceImpl implements AnswerService {
 
     public void create(QuestionDTO questionDTO, String content, SiteUserDTO siteUserDTO){
         AnswerDTO answerDTO = new AnswerDTO();
-        answerDTO.setId(questionDTO.getId());
         answerDTO.setContent(content);
         answerDTO.setCreateDateTime(LocalDateTime.now());
         answerDTO.setModifyDateTime(LocalDateTime.now());
