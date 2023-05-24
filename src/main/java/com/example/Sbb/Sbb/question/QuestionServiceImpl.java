@@ -4,16 +4,15 @@ import com.example.Sbb.Sbb.DataNotFoundException;
 import com.example.Sbb.Sbb.answer.AnswerEntity;
 import com.example.Sbb.Sbb.recommend.RecommendService;
 import com.example.Sbb.Sbb.user.SiteUserDTO;
+import com.querydsl.core.QueryResults;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -22,9 +21,12 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final RecommendService recommendService;
 
+/*  getList 메소드를 이용하면 모든 질문들이 출력됨
+    페이징을 하기 위해서 주석처리
     public List<QuestionEntity> getList() {
         return this.questionRepository.findAll();
     }
+*/
 
 
     public QuestionDTO getQuestion(Long id) {
@@ -57,19 +59,28 @@ public class QuestionServiceImpl implements QuestionService {
      * 정수 타입의 페이지 번호를 입력받아 해당 페이지의 질문 목록을 리턴
      * PageRequest.of(page, 10)에서 page는 조회할 페이지의 번호이고, 10은 한 페이지에 보여줄 게시물의 개수
      */
-    public Page<QuestionEntity> getList(int page) {
+    public Page<QuestionDTO> getList(int page) {
         /**
          * 게시물을 역순으로 조회하기 위해서 PageRequest.of 메소드의 세번째 파라미터로 Sort 객체 전달해야함
          * Sort.Order 객체로 구성된 리스트에 Sort.Order 객체를 추가
          * Sort.by(소트 리스트)로 소트 객체 생성 가능
          * Sort.Order.desc("createDate")는 작성일시를 역순으로 조회하기
          */
-        List<Sort.Order> sort = new ArrayList<>();
-        sort.add(Sort.Order.desc("createDateTime"));
-        Pageable pageable = PageRequest.of(page, 15, Sort.by(sort));
-        return this.questionRepository.findAll(pageable);
-    }
 
+
+        List<Sort.Order> sortOrders = new ArrayList<>();
+        sortOrders.add(Sort.Order.desc("createDateTime"));
+        Pageable pageable = PageRequest.of(page,15, Sort.by(sortOrders));
+        QueryResults<QuestionEntity> queryResults = questionRepository.getAll(pageable);
+        Long totalCount = queryResults.getTotal();
+
+        List<QuestionDTO> questionDTOList = queryResults.getResults()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+        return new PageImpl<>(questionDTOList, pageable, totalCount);
+
+    }
 
     public QuestionEntity toEntity(QuestionDTO questionDTO) {
         List<AnswerEntity> answerList = new ArrayList<>();
@@ -131,11 +142,18 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionDTO> search(String keyword) {
-        List<QuestionDTO> questionDTOList = new ArrayList<>();
-        for(QuestionEntity questionEntity:this.questionRepository.getQuestions(keyword)){
-            questionDTOList.add(this.toDTO(questionEntity));
-        }
-        return questionDTOList;
+    public Page<QuestionDTO> getSearchList(String keywords, int page, int size) {
+        List<Sort.Order> sortOrders = new ArrayList<>();
+        sortOrders.add(Sort.Order.desc("createDateTime"));
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortOrders));
+
+        QueryResults<QuestionEntity> queryResults = questionRepository.getQuestions(keywords, pageable);
+        Long totalCount = queryResults.getTotal();
+
+        List<QuestionDTO> questionDTOList = queryResults.getResults()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+        return new PageImpl<>(questionDTOList, pageable, totalCount);
     }
 }

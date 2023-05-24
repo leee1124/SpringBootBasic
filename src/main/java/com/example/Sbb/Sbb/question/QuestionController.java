@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 
+
 /**
  * RequiredArgsConstructor는 questionRepository 속성을 포함하는 생성자 생성하고,
  * 롬복에서 제공하는 애너테이션으로 final이 붙은 속성을 포함하는 생성자를 자동으로 생성하는 역할
@@ -35,9 +36,8 @@ public class QuestionController {
      * @RequestParam(value = "page", defaultValue = "0") int page 사용
      * 디폴트값은 0(첫 페이지 보여줌)
      */
-    @RequestMapping("/list")
-    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
-                       @RequestParam(value = "keyword") String keyword) {
+    @GetMapping("/list")
+    public String list(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
 
 
         /**
@@ -53,9 +53,8 @@ public class QuestionController {
          * 기존에 사용하던 questionEntityList를 보내던 방식에서 paging을 보내는 방식으로 변경
          * 따라서, 템플릿 엔진도 바꿔주어야 함
          */
-        Page<QuestionEntity> paging = this.questionService.getList(page, keyword);
+        Page<QuestionDTO> paging = this.questionService.getList(page);
         model.addAttribute("paging", paging);
-        model.addAttribute("keyword", keyword);
 
         return "question_list";
     }
@@ -142,6 +141,20 @@ public class QuestionController {
         SiteUserDTO siteUserDTO = this.userService.getUser(principal.getName());
         this.questionService.recommend(siteUserDTO, questionDTO);
         return String.format("redirect:/question/detail/{id}", id.intValue());
+    }
+
+
+    @GetMapping("/search")
+    public String searchList(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
+                             @RequestParam(value = "keywords", defaultValue = "") String keywords) {
+        /**
+         * 기존에 사용하던 questionEntityList를 보내던 방식에서 paging을 보내는 방식으로 변경
+         * 따라서, 템플릿 엔진도 바꿔주어야 함
+         */
+        Page<QuestionDTO> searchResult = this.questionService.getSearchList(keywords, page, 15);
+        model.addAttribute("searchResult", searchResult);
+        model.addAttribute("keywords", keywords);
+        return "question_list";
     }
 
 }
