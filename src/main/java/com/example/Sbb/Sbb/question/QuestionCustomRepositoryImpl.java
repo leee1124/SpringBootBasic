@@ -30,21 +30,16 @@ public class QuestionCustomRepositoryImpl implements QuestionCustomRepository{
     private BooleanExpression search(String keyword) {
         return questionEntity.subject.like("%" + keyword + "%")
                 .or(questionEntity.content.like("%" + keyword + "%"))
-                .or(siteUserEntity.username.like("%" + keyword + "%"))
-                .or(answerEntity.content.like("%" + keyword + "%"))
-                .or(answerEntity.author.username.like("%" + keyword + "%"));
+                .or(questionEntity.author.username.like("%" + keyword + "%"));
+
     }
     @Override
     public QueryResults<QuestionEntity> getQuestions(String keywords, Pageable pageable) {
         return jpaQueryFactory.selectFrom(questionEntity)
-               .leftJoin(siteUserEntity).on(siteUserEntity.id.eq(questionEntity.author.id)).fetchJoin()
-               .leftJoin(answerEntity).on(answerEntity.question.id.eq(questionEntity.id)).fetchJoin()
-               .leftJoin(answerEntity.author).on(answerEntity.author.id.eq(siteUserEntity.id)).fetchJoin()
-               .where(search(keywords))
-               .distinct()
-               .offset(pageable.getOffset())
-               .limit(pageable.getPageSize())
-               .fetchResults();
+                .where(search(keywords))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
     }
 
     public QueryResults<QuestionEntity> getAll(Pageable pageable){

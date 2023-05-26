@@ -69,8 +69,9 @@ public class QuestionServiceImpl implements QuestionService {
 
 
         List<Sort.Order> sortOrders = new ArrayList<>();
-        sortOrders.add(Sort.Order.desc("createDateTime"));
+        sortOrders.add(Sort.Order.desc("id"));
         Pageable pageable = PageRequest.of(page,15, Sort.by(sortOrders));
+        System.out.println("pageable = " + pageable);
         QueryResults<QuestionEntity> queryResults = questionRepository.getAll(pageable);
         Long totalCount = queryResults.getTotal();
 

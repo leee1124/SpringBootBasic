@@ -147,13 +147,8 @@ public class QuestionController {
     @GetMapping("/search")
     public String searchList(Model model, @RequestParam(value = "page", defaultValue = "0") int page,
                              @RequestParam(value = "keywords", defaultValue = "") String keywords) {
-        /**
-         * 기존에 사용하던 questionEntityList를 보내던 방식에서 paging을 보내는 방식으로 변경
-         * 따라서, 템플릿 엔진도 바꿔주어야 함
-         */
-        Page<QuestionDTO> searchResult = this.questionService.getSearchList(keywords, page, 15);
-        model.addAttribute("searchResult", searchResult);
-        model.addAttribute("keywords", keywords);
+        Page<QuestionDTO> paging = this.questionService.getSearchList(keywords, page, 15);
+        model.addAttribute("paging", paging);
         return "question_list";
     }
 
