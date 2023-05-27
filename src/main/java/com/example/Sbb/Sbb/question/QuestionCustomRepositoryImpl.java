@@ -27,16 +27,16 @@ public class QuestionCustomRepositoryImpl implements QuestionCustomRepository{
         this.jpaQueryFactory = new JPAQueryFactory(entityManager);
     }
 
-    private BooleanExpression search(String keyword) {
-        return questionEntity.subject.like("%" + keyword + "%")
-                .or(questionEntity.content.like("%" + keyword + "%"))
-                .or(questionEntity.author.username.like("%" + keyword + "%"));
-
+    private BooleanExpression search(String keywords) {
+        return questionEntity.subject.like("%" + keywords + "%")
+                .or(questionEntity.content.like("%" + keywords + "%"))
+                .or(questionEntity.author.username.like("%" + keywords + "%"));
     }
     @Override
     public QueryResults<QuestionEntity> getQuestions(String keywords, Pageable pageable) {
         return jpaQueryFactory.selectFrom(questionEntity)
                 .where(search(keywords))
+                .orderBy()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
