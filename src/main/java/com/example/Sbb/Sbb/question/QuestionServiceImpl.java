@@ -68,9 +68,7 @@ public class QuestionServiceImpl implements QuestionService {
          */
 
 
-        List<Sort.Order> sortOrders = new ArrayList<>();
-        sortOrders.add(Sort.Order.desc("createDateTime"));
-        Pageable pageable = PageRequest.of(page,15, Sort.by(sortOrders));
+        Pageable pageable = PageRequest.of(page,15);
         System.out.println("pageable = " + pageable);
         QueryResults<QuestionEntity> queryResults = questionRepository.getAll(pageable);
         Long totalCount = queryResults.getTotal();
@@ -144,9 +142,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Page<QuestionDTO> getSearchList(String keywords, int page, int size) {
-        List<Sort.Order> sortOrders = new ArrayList<>();
-        sortOrders.add(Sort.Order.asc("createDateTime"));
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sortOrders));
+        Pageable pageable = PageRequest.of(page,size);
 
         QueryResults<QuestionEntity> queryResults = questionRepository.getQuestions(keywords, pageable);
         Long totalCount = queryResults.getTotal();

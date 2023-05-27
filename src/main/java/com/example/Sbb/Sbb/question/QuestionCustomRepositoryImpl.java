@@ -36,7 +36,7 @@ public class QuestionCustomRepositoryImpl implements QuestionCustomRepository{
     public QueryResults<QuestionEntity> getQuestions(String keywords, Pageable pageable) {
         return jpaQueryFactory.selectFrom(questionEntity)
                 .where(search(keywords))
-                .orderBy()
+                .orderBy(questionEntity.createDateTime.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -44,6 +44,7 @@ public class QuestionCustomRepositoryImpl implements QuestionCustomRepository{
 
     public QueryResults<QuestionEntity> getAll(Pageable pageable){
         return jpaQueryFactory.selectFrom(questionEntity)
+                .orderBy(questionEntity.createDateTime.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
