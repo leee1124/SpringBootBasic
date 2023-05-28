@@ -39,6 +39,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation:'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
+	//마크다운 추가
+	implementation 'org.commonmark:commonmark:0.21.0'
 }
 
 tasks.named('test') {
