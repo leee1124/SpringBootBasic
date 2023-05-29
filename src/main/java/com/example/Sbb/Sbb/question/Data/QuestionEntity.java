@@ -1,7 +1,7 @@
-package com.example.Sbb.Sbb.question;
+package com.example.Sbb.Sbb.question.Data;
 
-import com.example.Sbb.Sbb.answer.AnswerEntity;
-import com.example.Sbb.Sbb.user.SiteUserEntity;
+import com.example.Sbb.Sbb.answer.Data.AnswerEntity;
+import com.example.Sbb.Sbb.user.Data.SiteUserEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,14 +24,16 @@ public class QuestionEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    private LocalDateTime createDateTime;
-
-    private LocalDateTime modifyDateTime;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<AnswerEntity> answerList;
 
     @ManyToOne
     private SiteUserEntity author;
+    @Column(columnDefinition = "long default 0", nullable = false)
+    private Long view;
+    private LocalDateTime createDateTime;
+
+    private LocalDateTime modifyDateTime;
 
 }

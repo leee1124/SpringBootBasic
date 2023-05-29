@@ -1,8 +1,11 @@
-package com.example.Sbb.Sbb.question;
+package com.example.Sbb.Sbb.question.Controller;
 
-import com.example.Sbb.Sbb.user.SiteUserDTO;
-import com.example.Sbb.Sbb.answer.AnswerForm;
-import com.example.Sbb.Sbb.user.UserServiceImpl;
+import com.example.Sbb.Sbb.question.Data.QuestionDTO;
+import com.example.Sbb.Sbb.question.Form.QuestionForm;
+import com.example.Sbb.Sbb.question.Service.QuestionService;
+import com.example.Sbb.Sbb.user.Data.SiteUserDTO;
+import com.example.Sbb.Sbb.answer.Form.AnswerForm;
+import com.example.Sbb.Sbb.user.Service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -67,6 +70,7 @@ public class QuestionController {
     @GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm){
         QuestionDTO questionDTO = this.questionService.getQuestion(id.longValue());
+        questionService.increaseView(questionDTO);
         model.addAttribute("question", questionDTO);
         return "question_detail";
     }

@@ -1,9 +1,12 @@
-package com.example.Sbb.Sbb.question;
+package com.example.Sbb.Sbb.question.Service;
 
 import com.example.Sbb.Sbb.DataNotFoundException;
-import com.example.Sbb.Sbb.answer.AnswerEntity;
-import com.example.Sbb.Sbb.recommend.RecommendService;
-import com.example.Sbb.Sbb.user.SiteUserDTO;
+import com.example.Sbb.Sbb.answer.Data.AnswerEntity;
+import com.example.Sbb.Sbb.question.Data.QuestionDTO;
+import com.example.Sbb.Sbb.question.Data.QuestionRepository;
+import com.example.Sbb.Sbb.question.Data.QuestionEntity;
+import com.example.Sbb.Sbb.recommend.Service.RecommendService;
+import com.example.Sbb.Sbb.user.Data.SiteUserDTO;
 import com.querydsl.core.QueryResults;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -101,6 +104,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .id(questionDTO.getId())
                 .subject(questionDTO.getSubject())
                 .content(questionDTO.getContent())
+                .view(questionDTO.getView())
                 .createDateTime(questionDTO.getCreateDateTime())
                 .modifyDateTime(questionDTO.getModifyDateTime())
                 .answerList(answerList)
@@ -129,6 +133,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .subject(questionEntity.getSubject())
                 .content(questionEntity.getContent())
                 .recommend(recommendService.getQuestionRecommendCount(questionEntity.getId()))
+                .view(questionEntity.getView())
                 .createDateTime(questionEntity.getCreateDateTime())
                 .modifyDateTime(questionEntity.getModifyDateTime())
                 .answerList(answerList)
@@ -138,6 +143,12 @@ public class QuestionServiceImpl implements QuestionService {
 
     public void recommend(SiteUserDTO siteUserDTO, QuestionDTO questionDTO){
         recommendService.recommend(siteUserDTO.toEntity(), this.toEntity(questionDTO));
+    }
+
+    @Override
+    public void increaseView(QuestionDTO questionDTO) {
+        questionDTO.setView(questionDTO.getView() + 1);
+        this.questionRepository.save(this.toEntity(questionDTO));
     }
 
     @Override

@@ -1,7 +1,7 @@
-package com.example.Sbb.Sbb.question;
+package com.example.Sbb.Sbb.question.Data;
 
 
-import com.example.Sbb.Sbb.user.SiteUserDTO;
+import com.example.Sbb.Sbb.user.Data.SiteUserDTO;
 
 import lombok.*;
 
@@ -18,13 +18,12 @@ public class QuestionDTO {
     private Long id;
     private String subject;
     private String content;
-    private LocalDateTime createDateTime;
-    private LocalDateTime modifyDateTime;
     private List<Answer> answerList;
     private SiteUserDTO author;
     private Long recommend;
-
-
+    private Long view;
+    private LocalDateTime createDateTime;
+    private LocalDateTime modifyDateTime;
 
 
     /**
@@ -41,6 +40,7 @@ public class QuestionDTO {
         private LocalDateTime modifyDateTime;
         private SiteUserDTO author;
         private Long recommend;
+
     }
 
 
