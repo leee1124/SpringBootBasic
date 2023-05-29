@@ -44,6 +44,7 @@ public class QuestionServiceImpl implements QuestionService {
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setSubject(subject);
         questionDTO.setContent(content);
+        questionDTO.setView(0L);
         questionDTO.setCreateDateTime(LocalDateTime.now());
         questionDTO.setModifyDateTime(LocalDateTime.now());
         questionDTO.setAuthor(siteUserDTO);
