@@ -2,6 +2,7 @@ package com.example.Sbb.Sbb.question.Data;
 
 import static com.example.Sbb.Sbb.question.Data.QQuestionEntity.questionEntity;
 
+import com.example.Sbb.Sbb.user.Data.SiteUserEntity;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -37,6 +38,16 @@ public class QuestionCustomRepositoryImpl implements QuestionCustomRepository{
                 .fetchResults();
     }
 
+    @Override
+    public QueryResults<QuestionEntity> getQuestionsByAuthor(SiteUserEntity user, Pageable pageable) {
+        return jpaQueryFactory.selectFrom(questionEntity)
+                .where(questionEntity.author.id.eq(user.getId()))
+                .orderBy(questionEntity.createDateTime.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+    }
+
     public QueryResults<QuestionEntity> getAll(Pageable pageable){
         return jpaQueryFactory.selectFrom(questionEntity)
                 .orderBy(questionEntity.createDateTime.desc())
@@ -44,4 +55,6 @@ public class QuestionCustomRepositoryImpl implements QuestionCustomRepository{
                 .limit(pageable.getPageSize())
                 .fetchResults();
     }
+
+
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -37,6 +38,8 @@ public class QuestionServiceImpl implements QuestionService {
          return this.toDTO(questionEntity);
     }
 
+
+
     public void create(String subject, String content, SiteUserDTO siteUserDTO) {
         QuestionDTO questionDTO = new QuestionDTO();
         questionDTO.setSubject(subject);
@@ -57,6 +60,20 @@ public class QuestionServiceImpl implements QuestionService {
     public void delete(QuestionDTO questionDTO) {
         this.questionRepository.delete(this.toEntity(questionDTO));
     }
+
+    public void recommend(SiteUserDTO siteUserDTO, QuestionDTO questionDTO){
+        recommendService.recommend(siteUserDTO.toEntity(), this.toEntity(questionDTO));
+    }
+
+    @Override
+    public void increaseView(QuestionDTO questionDTO) {
+        questionDTO.setView(questionDTO.getView() + 1);
+        this.questionRepository.save(this.toEntity(questionDTO));
+    }
+
+
+
+
 
     /**
      * 정수 타입의 페이지 번호를 입력받아 해당 페이지의 질문 목록을 리턴
@@ -83,6 +100,36 @@ public class QuestionServiceImpl implements QuestionService {
         return new PageImpl<>(questionDTOList, pageable, totalCount);
 
     }
+
+    @Override
+    public Page<QuestionDTO> getSearchList(String keywords, int page, int size) {
+        Pageable pageable = PageRequest.of(page,size);
+
+        QueryResults<QuestionEntity> queryResults = questionRepository.getQuestions(keywords, pageable);
+        Long totalCount = queryResults.getTotal();
+
+        List<QuestionDTO> questionDTOList = queryResults.getResults()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+        return new PageImpl<>(questionDTOList, pageable, totalCount);
+    }
+
+    @Override
+    public Page<QuestionDTO> getQuestions(int page, int size, SiteUserDTO siteUserDTO) {
+        Pageable pageable = PageRequest.of(page,size);
+
+        QueryResults<QuestionEntity> queryResults = this.questionRepository.getQuestionsByAuthor(siteUserDTO.toEntity(), pageable);
+        Long totalCount = queryResults.getTotal();
+
+        List<QuestionDTO> questionDTOList = queryResults.getResults()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+        return new PageImpl<>(questionDTOList,pageable,totalCount);
+    }
+
+
 
     public QuestionEntity toEntity(QuestionDTO questionDTO) {
         List<AnswerEntity> answerList = new ArrayList<>();
@@ -139,30 +186,5 @@ public class QuestionServiceImpl implements QuestionService {
                 .answerList(answerList)
                 .author(questionEntity.getAuthor().toDTO())
                 .build();
-    }
-
-    public void recommend(SiteUserDTO siteUserDTO, QuestionDTO questionDTO){
-        recommendService.recommend(siteUserDTO.toEntity(), this.toEntity(questionDTO));
-    }
-
-    @Override
-    public void increaseView(QuestionDTO questionDTO) {
-        questionDTO.setView(questionDTO.getView() + 1);
-        this.questionRepository.save(this.toEntity(questionDTO));
-    }
-
-    @Override
-    public Page<QuestionDTO> getSearchList(String keywords, int page, int size) {
-        Pageable pageable = PageRequest.of(page,size);
-
-        QueryResults<QuestionEntity> queryResults = questionRepository.getQuestions(keywords, pageable);
-        Long totalCount = queryResults.getTotal();
-
-        List<QuestionDTO> questionDTOList = queryResults.getResults()
-                .stream()
-                .map(this::toDTO)
-                .collect(Collectors.toList());
-        PageImpl<QuestionDTO> page1 = new PageImpl<>(questionDTOList, pageable, totalCount);
-        return page1;
     }
 }
