@@ -1,6 +1,6 @@
 package com.example.Sbb.Sbb;
 
-import com.example.Sbb.Sbb.user.UserSecurityService;
+import com.example.Sbb.Sbb.user.Service.UserSecurityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
