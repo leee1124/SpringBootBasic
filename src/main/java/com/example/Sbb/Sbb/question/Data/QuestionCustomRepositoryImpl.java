@@ -1,21 +1,16 @@
-package com.example.Sbb.Sbb.question;
+package com.example.Sbb.Sbb.question.Data;
 
-import static com.example.Sbb.Sbb.answer.QAnswerEntity.answerEntity;
-import static com.example.Sbb.Sbb.question.QQuestionEntity.questionEntity;
-import static com.example.Sbb.Sbb.user.QSiteUserEntity.siteUserEntity;
+import static com.example.Sbb.Sbb.question.Data.QQuestionEntity.questionEntity;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
 @Transactional
 @Repository
