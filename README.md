@@ -20,7 +20,7 @@
 * [x] 추천 기능
 * [x] 마크다운 에디터 추가
 * [ ] 소셜 로그인 기능
-* [ ] 조회수 기능
+* [x] 조회수 기능
 * [ ] 프로필 기능
 
 ## 개발 환경
@@ -28,8 +28,15 @@
 - OS: Windows11
 - Java 11
 - Spring Boot 2.7.4
+- Spring Security
+- Spring Data JPA
+- QueryDSL
 - H2 데이터베이스
+- Lombok
 - Gradle
+- Thymeleaf
+- BootStrap
+
 
 ## 개발 과정에서 어려웠던 점
 ### 동기부여의 문제
