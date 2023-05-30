@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
         /**
          * passwordEncoder.matches 메소드는 raw 비밀번호를 앞에 두어야 함
          */
-        boolean result = passwordEncoder.matches(beforePassword, siteUserDTO.getPassword());
-        return result;
+        return passwordEncoder.matches(beforePassword, siteUserDTO.getPassword());
     }
 }
