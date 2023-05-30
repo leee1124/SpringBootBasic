@@ -38,4 +38,20 @@ public class UserServiceImpl implements UserService {
         SiteUserDTO siteUserDTO = new SiteUserDTO(siteUser.getId(), siteUser.getUsername(), siteUser.getPassword(), siteUser.getEmail());
         return siteUserDTO;
     }
+
+    @Override
+    public void modifyPassword(SiteUserDTO siteUserDTO, String passwordConfirm) {
+        siteUserDTO.setPassword(passwordEncoder.encode(passwordConfirm));
+        SiteUserEntity siteUser = siteUserDTO.toEntity();
+        this.userRepository.save(siteUser);
+    }
+
+    @Override
+    public boolean isSamePassword(SiteUserDTO siteUserDTO, String beforePassword) {
+        /**
+         * passwordEncoder.matches 메소드는 raw 비밀번호를 앞에 두어야 함
+         */
+        boolean result = passwordEncoder.matches(beforePassword, siteUserDTO.getPassword());
+        return result;
+    }
 }
