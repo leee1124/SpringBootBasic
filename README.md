@@ -1,11 +1,10 @@
 # SpringBootBasic Project
 ## 목적
 ###  Spring Boot를 이용해서 간단한 API 서버와 게시판을 개발 
-* 이 프로젝트를 통해서 스프링 MVC 모델, JPA, JUnit을 이용한 테스트 코드 작성에 대한 이해 확립
-* 컨트롤러를 이용해 URL과 매핑되는 메소드 관리
-* JPA를 이용해 DB 제어
+* Jump to spring boot 기반( https://wikidocs.net/book/7601 / Github: https://github.com/pahkey/sbb3 )
+* 스프링 MVC, JPA, QueryDSL을 이용해서 프로젝트를 진행하고, 이해하는 것을 목표로 함.
 
-## 기획
+## 기능 요구사항
 * [x] 게시물 작성 기능
 * [x] 답글 작성 기능
 * [x] 게시글 수정 기능
@@ -19,7 +18,6 @@
 * [x] 검색 기능
 * [x] 추천 기능
 * [x] 마크다운 에디터 추가
-* [ ] 소셜 로그인 기능
 * [x] 조회수 기능
 * [x] 마이페이지 기능
 
@@ -61,6 +59,3 @@
 * 아이디어1: @Query 어노테이션을 이용해서 구현할까 생각함. 하지만 sql을 사용하지 않고, ORM을 이용해서 객체지향적인 개발을 하고자 하는데 위반할 것 같다는 생각이 듦
 * 해결방법: QueryDSL을 이용해서 구현함. 보다 객체지향적인 코드를 작성할 수 있게 되어 만족스러웠음.
 
-## 기반 프로젝트
-* 점프 투 스프링부트: https://wikidocs.net/book/7601
-* 점프 투 스프링부트 github: https://github.com/pahkey/sbb3 
